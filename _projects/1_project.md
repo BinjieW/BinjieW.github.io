@@ -1,11 +1,12 @@
 ---
 layout: page
-title: project 1
-description: with background image
-img: assets/img/12.jpg
+title: FacTool
+description: Factuality Detection in Generative AI
+img: assets/img/publication_preview/factool_small.png
 importance: 1
+redirect: https://github.com/GAIR-NLP/factool/
 category: work
-related_publications: true
+selected: true
 ---
 
 Every project has a beautiful feature showcase page.
