@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="DECK feedback-improvement experiments: Blender error repair and six quality feedback conditions."
+    />
+    <title>Feedback loops · DECK</title>
+    <link rel="stylesheet" href="./assets/css/site.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="shell nav-wrap">
+        <a class="brand" href="./index.html" aria-label="DECK home">
+          <span class="brand-mark">D</span><span>DECK</span>
+        </a>
+        <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">Menu</button>
+        <nav class="site-nav" aria-label="Primary navigation">
+          <a href="./index.html" data-page="index.html">Overview</a>
+          <a href="./benchmark.html" data-page="benchmark.html">Benchmark</a>
+          <a href="./feedback.html" data-page="feedback.html">Feedback loops</a>
+          <a href="./verifier.html" data-page="verifier.html">Verifier</a>
+          <a href="./gallery.html" data-page="gallery.html">3D gallery</a>
+          <span class="nav-status">Research in progress</span>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="page-hero">
+        <div class="shell">
+          <div class="crumbs"><a href="./index.html">DECK</a> / Feedback loops</div>
+          <div class="page-hero-grid">
+            <div>
+              <div class="kicker">RQ 2 · Self-improvement</div>
+              <h1>What kind of feedback helps a model fix its own artifact?</h1>
+            </div>
+            <p class="lead">
+              Starting from the same Hardest-10 round-0 outputs, we isolate two stages: repair code that does
+              not execute, then improve code that renders but does not fully satisfy the requested edit.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section tight">
+        <div class="shell">
+          <div class="loop" aria-label="Feedback-improvement loop">
+            <div class="loop-node">Round-0 code<small>same starting output</small></div>
+            <div class="loop-node">Compile + render<small>Blender runtime</small></div>
+            <div class="loop-node">Build feedback<small>condition-specific</small></div>
+            <div class="loop-node">Revise code<small>same editing model</small></div>
+            <div class="loop-node">Re-evaluate<small>stop at success or round 10</small></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section tint">
+        <div class="shell">
+          <div class="section-head">
+            <div>
+              <div class="kicker">Experiment A · Execution feedback</div>
+              <h2>Concrete runtime errors are exceptionally actionable.</h2>
+            </div>
+            <p>
+              Each initially failed script receives its Blender error and can be revised for up to ten rounds.
+              The experiment measures render recovery only—not whether the repaired artifact is semantically
+              correct.
+            </p>
+          </div>
+          <div class="metric-grid" style="margin-bottom: 28px">
+            <div class="metric"><strong>402</strong><span>initial render failures</span></div>
+            <div class="metric"><strong>396</strong><span>successfully repaired</span></div>
+            <div class="metric"><strong>1.62</strong><span>mean rounds when repaired</span></div>
+            <div class="metric"><strong>99.77%</strong><span>final render success</span></div>
+          </div>
+          <div class="figure-card">
+            <img
+              src="./assets/figures/error-repair-trajectory.svg"
+              alt="Cumulative percentage of initial render failures repaired over seven rounds"
+            />
+            <div class="figure-meta">
+              <span>56.47% repaired in one round · 87.81% within two · 94.78% within three</span>
+              <a href="./assets/data/error-repair-trajectory.json">Download trajectory JSON ↓</a>
+            </div>
+          </div>
+          <div class="split" style="margin-top: 24px">
+            <article class="mini-card">
+              <h3>What remains after ten rounds?</h3>
+              <p>
+                Only six cases: repeated use of unsupported Blender APIs in five cases and one persistent
+                timeout. Most gains arrive before round three.
+              </p>
+            </article>
+            <article class="mini-card">
+              <h3>Interpretation boundary</h3>
+              <p>
+                Execution recovery proves that the artifact can be produced. It does not prove the requested
+                geometry, style, or scene relation is correct; quality must be measured separately.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="shell">
+          <div class="section-head">
+            <div>
+              <div class="kicker">Experiment B · Quality feedback</div>
+              <h2>Specific evidence usually beats a generic “try again.”</h2>
+            </div>
+            <p>
+              Non-perfect, successfully rendered outputs can iterate for up to ten rounds. Aggregate score
+              still averages all 240 tasks per model and counts render failures as zero.
+            </p>
+          </div>
+          <div class="figure-card">
+            <img
+              src="./assets/figures/feedback-condition-gains.svg"
+              alt="Initial and final mean scores for six quality feedback conditions"
+            />
+            <div class="figure-meta">
+              <span>Hardest-10 · six conditions · same round-0 outputs</span>
+              <a href="./assets/data/quality-feedback-results.csv">Download CSV ↓</a>
+            </div>
+          </div>
+
+          <div class="table-wrap" style="margin-top: 28px">
+            <table>
+              <thead>
+                <tr>
+                  <th>Feedback condition</th>
+                  <th>Models</th>
+                  <th>Round 0</th>
+                  <th>Final</th>
+                  <th>Δ</th>
+                  <th>What the model receives</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Global message</td><td>11</td><td>0.616</td><td>0.685</td><td class="overall">+0.069</td><td>“Not fully satisfied; improve.”</td>
+                </tr>
+                <tr>
+                  <td>Checklist</td><td>11</td><td>0.616</td><td>0.704</td><td class="overall">+0.088</td><td>Rubric items, no verdict</td>
+                </tr>
+                <tr>
+                  <td>Renders</td><td>9</td><td>0.635</td><td>0.754</td><td class="overall">+0.120</td><td>Original + modified six views</td>
+                </tr>
+                <tr>
+                  <td>Checklist + score</td><td>11</td><td>0.616</td><td>0.711</td><td class="overall">+0.095</td><td>Rubric plus scalar reward</td>
+                </tr>
+                <tr>
+                  <td>Per-item verdicts</td><td>11</td><td>0.616</td><td>0.727</td><td class="overall">+0.111</td><td>YES / NO for each checklist item</td>
+                </tr>
+                <tr>
+                  <td>Verdicts + renders</td><td>9</td><td>0.635</td><td>0.773</td><td class="overall">+0.138</td><td>Item verdicts plus visual evidence</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="table-note">
+            GPT-OSS-120B and Qwen3-Coder-Next did not run in image conditions because the current model
+            endpoints do not support multimodal input. For that reason, 9-model and 11-model aggregate rows
+            are not directly comparable.
+          </p>
+        </div>
+      </section>
+
+      <section class="section dark">
+        <div class="shell">
+          <div class="section-head">
+            <div>
+              <div class="kicker">Model heterogeneity</div>
+              <h2>There is no universally best feedback channel.</h2>
+            </div>
+            <p>
+              Aggregate trends are positive, but individual models use—or misuse—the same signal differently.
+            </p>
+          </div>
+          <div class="card-grid">
+            <article class="card">
+              <h3>Claude Opus 4.8</h3>
+              <p>
+                Best with verdicts + renders: 0.752 → 0.923 (+0.171), reaching full score on 218 / 240 tasks.
+              </p>
+            </article>
+            <article class="card">
+              <h3>Claude Sonnet 5</h3>
+              <p>
+                Best with per-item verdicts alone: 0.727 → 0.947 (+0.220). Adding renders did not improve the
+                final mean further.
+              </p>
+            </article>
+            <article class="card">
+              <h3>Claude Sonnet 4.6</h3>
+              <p>
+                The major exception: only render-only is roughly neutral (+0.001); every other condition
+                lowers aggregate score, partly through reduced render success.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="shell">
+          <div class="warning">
+            <span class="warning-icon">!</span>
+            <div>
+              <h3>Current checklist feedback is not independent of the benchmark.</h3>
+              <p>
+                The quality loop feeds back the benchmark’s own checklist and Sonnet 5 item judgments, then
+                reports progress using that same framework. This creates evaluator leakage and can reward
+                adapting to judge behavior rather than improving artifact quality. The present result is best
+                read as “models can optimize against benchmark feedback,” not yet as an independent estimate
+                of real user-facing improvement.
+              </p>
+            </div>
+          </div>
+          <div class="section-head" style="margin-top: 66px">
+            <div>
+              <div class="kicker">Next experiment</div>
+              <h2>Decouple feedback from final evaluation.</h2>
+            </div>
+            <p>The strongest follow-up is a crossed design where feedback source and final judge vary independently.</p>
+          </div>
+          <div class="card-grid">
+            <article class="card">
+              <span class="number">01</span>
+              <h3>Separate critic and judge</h3>
+              <p>
+                Use a feedback verifier with a different model family and prompt from the held-out final
+                evaluator; record their agreement and disagreement.
+              </p>
+            </article>
+            <article class="card">
+              <span class="number">02</span>
+              <h3>Public and hidden rubrics</h3>
+              <p>
+                Feed requested-change items, but reserve preservation, validity, and side-effect checks for
+                final scoring to detect reward hacking.
+              </p>
+            </article>
+            <article class="card">
+              <span class="number">03</span>
+              <h3>Independent calibration set</h3>
+              <p>
+                Add human or adjudicated labels for a stratified holdout, including regressions where
+                checklist score rises while overall artifact quality falls.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="shell footer-wrap">
+        <span>DECK · Feedback-improvement experiments · Hardest-10 subset</span>
+        <a href="./verifier.html">Next: verifier reliability →</a>
+      </div>
+    </footer>
+    <script src="./assets/js/site.js"></script>
+  </body>
+</html>
