@@ -3,10 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta
-      name="description"
-      content="DECK verifier reliability audit and exploratory CLIP-based verifier results."
-    />
+    <meta name="description" content="DECK verifier reliability audit and exploratory CLIP-based verifier results." />
     <title>Verifier reliability · DECK</title>
     <link rel="stylesheet" href="./assets/css/site.css" />
   </head>
@@ -14,9 +11,7 @@
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header">
       <div class="shell nav-wrap">
-        <a class="brand" href="./index.html" aria-label="DECK home">
-          <span class="brand-mark">D</span><span>DECK</span>
-        </a>
+        <a class="brand" href="./index.html" aria-label="DECK home"> <span class="brand-mark">D</span><span>DECK</span> </a>
         <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">Menu</button>
         <nav class="site-nav" aria-label="Primary navigation">
           <a href="./index.html" data-page="index.html">Overview</a>
@@ -39,8 +34,8 @@
               <h1>A stronger judge cannot recover evidence that was never captured.</h1>
             </div>
             <p class="lead">
-              Our audit shows that error comes from four places: task definition, evidence generation,
-              verifier modality, and response protocol. Sonnet 5 capability is only one part of the system.
+              Our audit shows that error comes from four places: task definition, evidence generation, verifier modality, and response protocol.
+              Sonnet 5 capability is only one part of the system.
             </p>
           </div>
         </div>
@@ -62,10 +57,9 @@
             <div>
               <h3>Level 1’s judgment failures are primarily a measurement problem—not model inability.</h3>
               <p>
-                All 92 observed zero-score L1 outputs made the intended literal or parameter change and had no
-                render failure. The audit identifies 59 clear false negatives, 11 semantically invalid tasks,
-                and 22 edits whose target was too small, normalized away, or occluded. A VLM cannot reliably
-                infer global dimensions from independently normalized images or metadata from RGB.
+                All 92 observed zero-score L1 outputs made the intended literal or parameter change and had no render failure. The audit identifies 59
+                clear false negatives, 11 semantically invalid tasks, and 22 edits whose target was too small, normalized away, or occluded. A VLM
+                cannot reliably infer global dimensions from independently normalized images or metadata from RGB.
               </p>
             </div>
           </div>
@@ -119,8 +113,8 @@
               <h2>Route each assertion to the evidence it needs.</h2>
             </div>
             <p>
-              The proposed evaluator makes “no evidence,” invalid tasks, runtime failure, and judge errors
-              first-class states instead of silently converting all of them to model failure.
+              The proposed evaluator makes “no evidence,” invalid tasks, runtime failure, and judge errors first-class states instead of silently
+              converting all of them to model failure.
             </p>
           </div>
           <div class="workflow">
@@ -162,10 +156,30 @@
                 </tr>
               </thead>
               <tbody>
-                <tr><td>A · Visually retainable</td><td>15</td><td>Task-aware VLM + protocol guards</td><td>Keep, calibrate</td></tr>
-                <tr><td>B · Hybrid required</td><td>142</td><td>Scene/geometry checks + targeted visual evidence</td><td>Redesign evidence</td></tr>
-                <tr><td>C · Not currently scoreable</td><td>3</td><td>None under current task definition</td><td>Remove or rewrite</td></tr>
-                <tr><td>D · Semantic multi-judge</td><td>80</td><td>Structured checks + anchored, cross-family VLMs</td><td>Add adjudication</td></tr>
+                <tr>
+                  <td>A · Visually retainable</td>
+                  <td>15</td>
+                  <td>Task-aware VLM + protocol guards</td>
+                  <td>Keep, calibrate</td>
+                </tr>
+                <tr>
+                  <td>B · Hybrid required</td>
+                  <td>142</td>
+                  <td>Scene/geometry checks + targeted visual evidence</td>
+                  <td>Redesign evidence</td>
+                </tr>
+                <tr>
+                  <td>C · Not currently scoreable</td>
+                  <td>3</td>
+                  <td>None under current task definition</td>
+                  <td>Remove or rewrite</td>
+                </tr>
+                <tr>
+                  <td>D · Semantic multi-judge</td>
+                  <td>80</td>
+                  <td>Structured checks + anchored, cross-family VLMs</td>
+                  <td>Add adjudication</td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -180,24 +194,19 @@
               <h2>Can CLIP provide a cheap independent signal?</h2>
             </div>
             <p>
-              We compare two six-view CLIP scores against existing Sonnet 5 YES/NO checklist labels. They are
-              useful ranking signals, but not replacements for typed verification.
+              We compare two six-view CLIP scores against existing Sonnet 5 YES/NO checklist labels. They are useful ranking signals, but not
+              replacements for typed verification.
             </p>
           </div>
           <div class="split">
             <div>
-              <div class="formula">
-                Contrastive Δ = meanᵥ[(sim(Mᵥ, positive) − sim(Mᵥ, negative)) −
-                (sim(Oᵥ, positive) − sim(Oᵥ, negative))]
-              </div>
+              <div class="formula">Contrastive Δ = meanᵥ[(sim(Mᵥ, positive) − sim(Mᵥ, negative)) − (sim(Oᵥ, positive) − sim(Oᵥ, negative))]</div>
               <p style="margin-top: 14px; color: rgba(255, 255, 255, 0.67)">
                 Asks whether each modified view moved toward the satisfied description relative to the original.
               </p>
             </div>
             <div>
-              <div class="formula">
-                Directional CLIP = meanᵥ cosine(E(Mᵥ) − E(Oᵥ), E(target) − E(source))
-              </div>
+              <div class="formula">Directional CLIP = meanᵥ cosine(E(Mᵥ) − E(Oᵥ), E(target) − E(source))</div>
               <p style="margin-top: 14px; color: rgba(255, 255, 255, 0.67)">
                 Aligns the visual direction of change with the textual direction of the requested edit.
               </p>
@@ -224,23 +233,17 @@
               <h2>Signal varies substantially by level.</h2>
             </div>
             <p>
-              YES means Sonnet 5 judged the checklist item satisfied. These labels are not independent human
-              truth, and Sonnet 5 also generated the CLIP captions.
+              YES means Sonnet 5 judged the checklist item satisfied. These labels are not independent human truth, and Sonnet 5 also generated the
+              CLIP captions.
             </p>
           </div>
           <div class="split">
             <div class="figure-card">
-              <img
-                src="./assets/figures/clip/contrastive-by-level.png"
-                alt="Contrastive CLIP score distributions for YES and NO labels by level"
-              />
+              <img src="./assets/figures/clip/contrastive-by-level.png" alt="Contrastive CLIP score distributions for YES and NO labels by level" />
               <div class="figure-meta"><span>Contrastive CLIP Δ</span><span>macro AUC 0.621</span></div>
             </div>
             <div class="figure-card">
-              <img
-                src="./assets/figures/clip/directional-by-level.png"
-                alt="Directional CLIP score distributions for YES and NO labels by level"
-              />
+              <img src="./assets/figures/clip/directional-by-level.png" alt="Directional CLIP score distributions for YES and NO labels by level" />
               <div class="figure-meta"><span>Directional CLIP</span><span>macro AUC 0.636</span></div>
             </div>
           </div>
@@ -255,8 +258,8 @@
               <h2>What the embedding scores see—and miss.</h2>
             </div>
             <p>
-              “Effective” means agreement with the existing verifier label. “Ineffective” means a
-              high-confidence disagreement, not necessarily that Sonnet 5 is ground truth.
+              “Effective” means agreement with the existing verifier label. “Ineffective” means a high-confidence disagreement, not necessarily that
+              Sonnet 5 is ground truth.
             </p>
           </div>
           <div class="case-grid">
@@ -265,8 +268,8 @@
               <div class="case-body">
                 <h3>Contrastive works · global recoloring</h3>
                 <p>
-                  Gold → red is visible in every view. Positive and negative captions differ primarily in
-                  color, producing a 98.8th-percentile YES score.
+                  Gold → red is visible in every view. Positive and negative captions differ primarily in color, producing a 98.8th-percentile YES
+                  score.
                 </p>
               </div>
             </article>
@@ -275,8 +278,8 @@
               <div class="case-body">
                 <h3>Contrastive fails · localized door</h3>
                 <p>
-                  The wooden door occupies a small region inside a large scene rebuild. Whole-image semantics
-                  dominate, producing a high-confidence false negative.
+                  The wooden door occupies a small region inside a large scene rebuild. Whole-image semantics dominate, producing a high-confidence
+                  false negative.
                 </p>
               </div>
             </article>
@@ -284,10 +287,7 @@
               <img src="./assets/figures/cases/directional_effective.png" alt="Yellow-to-blue cam disk case study" />
               <div class="case-body">
                 <h3>Directional works · clean edit direction</h3>
-                <p>
-                  Object and framing remain stable while yellow becomes blue. All six image-difference vectors
-                  align with the text change.
-                </p>
+                <p>Object and framing remain stable while yellow becomes blue. All six image-difference vectors align with the text change.</p>
               </div>
             </article>
             <article class="case">
@@ -295,8 +295,8 @@
               <div class="case-body">
                 <h3>Directional fails · preservation constraint</h3>
                 <p>
-                  The artifact moves strongly toward “organic,” but loses its extrusion identity. Directional
-                  CLIP rewards change without enforcing the invariant.
+                  The artifact moves strongly toward “organic,” but loses its extrusion identity. Directional CLIP rewards change without enforcing
+                  the invariant.
                 </p>
               </div>
             </article>
@@ -316,8 +316,8 @@
               <h2>Use cheap signals to route—not to decide everything.</h2>
             </div>
             <p>
-              The practical evaluator is a cascade: deterministic scene checks for measurable facts, cheap
-              embedding or CV signals for triage, and task-aware VLM adjudication for unresolved semantics.
+              The practical evaluator is a cascade: deterministic scene checks for measurable facts, cheap embedding or CV signals for triage, and
+              task-aware VLM adjudication for unresolved semantics.
             </p>
           </div>
           <div class="card-grid">

@@ -24,6 +24,6 @@ document.querySelectorAll("model-viewer").forEach((viewer) => {
       const hint = viewer.closest(".model-stage, .model-card")?.querySelector(".drag-hint");
       if (hint) hint.style.opacity = "0";
     },
-    { once: true },
+    { once: true }
   );
 });

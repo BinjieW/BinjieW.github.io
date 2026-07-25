@@ -42,8 +42,7 @@ body::before {
   position: fixed;
   z-index: -1;
   inset: 0;
-  background-image:
-    linear-gradient(rgba(23, 63, 57, 0.026) 1px, transparent 1px),
+  background-image: linear-gradient(rgba(23, 63, 57, 0.026) 1px, transparent 1px),
     linear-gradient(90deg, rgba(23, 63, 57, 0.026) 1px, transparent 1px);
   background-size: 42px 42px;
   content: "";
@@ -281,9 +280,7 @@ h1 em {
   min-height: 515px;
   border: 1px solid rgba(23, 63, 57, 0.12);
   border-radius: 32px;
-  background:
-    radial-gradient(circle at 68% 26%, rgba(255, 255, 255, 0.88), transparent 29%),
-    linear-gradient(145deg, #d6e4dd, #abc9bd);
+  background: radial-gradient(circle at 68% 26%, rgba(255, 255, 255, 0.88), transparent 29%), linear-gradient(145deg, #d6e4dd, #abc9bd);
   box-shadow: var(--shadow);
 }
 
@@ -928,15 +925,11 @@ td.overall {
 
 .model-card model-viewer {
   min-height: 390px;
-  background:
-    radial-gradient(circle at 50% 38%, #ffffff, transparent 28%),
-    linear-gradient(145deg, #ecf2ee, #ccdcd5);
+  background: radial-gradient(circle at 50% 38%, #ffffff, transparent 28%), linear-gradient(145deg, #ecf2ee, #ccdcd5);
 }
 
 .model-card.blendnet model-viewer {
-  background:
-    radial-gradient(circle at 50% 38%, #fff, transparent 28%),
-    linear-gradient(145deg, #f1eee7, #d9d2c6);
+  background: radial-gradient(circle at 50% 38%, #fff, transparent 28%), linear-gradient(145deg, #f1eee7, #d9d2c6);
 }
 
 .model-info {

@@ -3,16 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta
-      name="description"
-      content="DECK is a benchmark for evaluating and improving LLMs that edit executable artifact-generating code."
-    />
+    <meta name="description" content="DECK is a benchmark for evaluating and improving LLMs that edit executable artifact-generating code." />
     <title>DECK — Editing code that makes things</title>
     <link rel="stylesheet" href="./assets/css/site.css" />
-    <script
-      type="module"
-      src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.3.1/model-viewer.min.js"
-    ></script>
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.3.1/model-viewer.min.js"></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -41,9 +35,8 @@
             <div class="eyebrow">Advisor brief · July 2026</div>
             <h1>Editing code that <em>makes things.</em></h1>
             <p class="hero-copy">
-              DECK studies whether language models can modify executable programs whose correctness lives in
-              the artifact they produce—not only in source code or unit tests. Our first domain is Blender
-              Python and editable 3D geometry.
+              DECK studies whether language models can modify executable programs whose correctness lives in the artifact they produce—not only in
+              source code or unit tests. Our first domain is Blender Python and editable 3D geometry.
             </p>
             <div class="button-row">
               <a class="button" href="./benchmark.html">See the benchmark</a>
@@ -87,8 +80,8 @@
               <h2>A benchmark, a stress test, and an improvement loop.</h2>
             </div>
             <p>
-              The core shift is from asking “does the code run?” to asking “did the requested change appear
-              in the compiled artifact, without destroying what should remain?”
+              The core shift is from asking “does the code run?” to asking “did the requested change appear in the compiled artifact, without
+              destroying what should remain?”
             </p>
           </div>
           <div class="card-grid">
@@ -96,24 +89,23 @@
               <span class="number">01</span>
               <h3>Artifact-grounded editing</h3>
               <p>
-                A model receives an existing Blender Python program and a modification instruction. It must
-                return executable code whose rendered 3D output satisfies the edit.
+                A model receives an existing Blender Python program and a modification instruction. It must return executable code whose rendered 3D
+                output satisfies the edit.
               </p>
             </article>
             <article class="card">
               <span class="number">02</span>
               <h3>Controlled difficulty</h3>
               <p>
-                Six levels move from literal parameter changes to component logic, topology, semantic
-                restyling, and multi-object scene composition.
+                Six levels move from literal parameter changes to component logic, topology, semantic restyling, and multi-object scene composition.
               </p>
             </article>
             <article class="card">
               <span class="number">03</span>
               <h3>Feedback-driven recovery</h3>
               <p>
-                We test whether render observations, checklist signals, and execution errors help the same
-                model repair its own output over multiple rounds.
+                We test whether render observations, checklist signals, and execution errors help the same model repair its own output over multiple
+                rounds.
               </p>
             </article>
           </div>
@@ -127,10 +119,7 @@
               <div class="kicker">Evaluation pipeline</div>
               <h2>Source code to visual evidence.</h2>
             </div>
-            <p>
-              Every model sees the same source and edit request. We compile, render six canonical views, and
-              evaluate atomic checklist items.
-            </p>
+            <p>Every model sees the same source and edit request. We compile, render six canonical views, and evaluate atomic checklist items.</p>
           </div>
           <div class="workflow" aria-label="DECK workflow">
             <div class="workflow-step">
@@ -170,15 +159,12 @@
               <h2>Performance bends sharply at semantic and scene edits.</h2>
             </div>
             <p>
-              This figure has been regenerated on the exact Hardest-10 subset used by the feedback-improvement
-              experiments: 10 objects × 6 levels × 4 edits for every model.
+              This figure has been regenerated on the exact Hardest-10 subset used by the feedback-improvement experiments: 10 objects × 6 levels × 4
+              edits for every model.
             </p>
           </div>
           <div class="figure-card">
-            <img
-              src="./assets/figures/hardest10-main-figure.svg"
-              alt="Hardest-10 overall model ranking and heatmap of scores by six edit levels"
-            />
+            <img src="./assets/figures/hardest10-main-figure.svg" alt="Hardest-10 overall model ranking and heatmap of scores by six edit levels" />
             <div class="figure-meta">
               <span>Observed checklist score · Sonnet 5 judge · 2,640 evaluations</span>
               <a href="./benchmark.html">Open full table and interpretation →</a>
@@ -195,23 +181,22 @@
               <h2>Models can improve—measurement is now the bottleneck.</h2>
             </div>
             <p>
-              Execution feedback is highly actionable. Quality feedback also helps, but its apparent gain is
-              entangled with the benchmark’s own checklist and judge.
+              Execution feedback is highly actionable. Quality feedback also helps, but its apparent gain is entangled with the benchmark’s own
+              checklist and judge.
             </p>
           </div>
           <div class="finding-grid">
             <article class="finding">
               <strong>84.77% → 99.77%</strong>
               <p>
-                Render success after feeding Blender errors back to the original model. 396 of 402 initial
-                failures were repaired, usually within 2–3 rounds.
+                Render success after feeding Blender errors back to the original model. 396 of 402 initial failures were repaired, usually within 2–3
+                rounds.
               </p>
             </article>
             <article class="finding coral">
               <strong>+0.138</strong>
               <p>
-                Largest aggregate quality gain: per-item checklist verdicts plus renders, across the nine
-                models that support multimodal feedback.
+                Largest aggregate quality gain: per-item checklist verdicts plus renders, across the nine models that support multimodal feedback.
               </p>
             </article>
           </div>
@@ -220,10 +205,9 @@
             <div>
               <h3>Important validity gap: feedback and final measurement are coupled.</h3>
               <p>
-                The current checklist feedback comes from the benchmark framework itself—the same task rubric
-                and Sonnet 5 judge family used to score progress. The next design must separate the feedback
-                signal from the final evaluator, add hidden preservation checks, and calibrate against
-                independent or human judgments.
+                The current checklist feedback comes from the benchmark framework itself—the same task rubric and Sonnet 5 judge family used to score
+                progress. The next design must separate the feedback signal from the final evaluator, add hidden preservation checks, and calibrate
+                against independent or human judgments.
               </p>
             </div>
           </div>
