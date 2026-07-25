@@ -30,8 +30,8 @@
           <div class="crumbs"><a href="./index.html">DECK</a> / Feedback loops</div>
           <div class="page-hero-grid">
             <div>
-              <div class="kicker">RQ 2 · Self-improvement</div>
-              <h1>What kind of feedback helps a model fix its own artifact?</h1>
+              <div class="kicker">Feedback experiments</div>
+              <h1>Execution repair and quality-feedback experiments.</h1>
             </div>
             <p class="lead">
               Starting from the same Hardest-10 round-0 outputs, we isolate two stages: repair code that does not execute, then improve code that
@@ -58,7 +58,7 @@
           <div class="section-head">
             <div>
               <div class="kicker">Experiment A · Execution feedback</div>
-              <h2>Concrete runtime errors are exceptionally actionable.</h2>
+              <h2>Blender errors as feedback.</h2>
             </div>
             <p>
               Each initially failed script receives its Blender error and can be revised for up to ten rounds. The experiment measures render recovery
@@ -105,11 +105,11 @@
           <div class="section-head">
             <div>
               <div class="kicker">Experiment B · Quality feedback</div>
-              <h2>Specific evidence usually beats a generic “try again.”</h2>
+              <h2>Six quality-feedback conditions.</h2>
             </div>
             <p>
-              Non-perfect, successfully rendered outputs can iterate for up to ten rounds. Aggregate score still averages all 240 tasks per model and
-              counts render failures as zero.
+              Non-perfect, successfully rendered outputs can iterate for up to ten rounds. After each round, a VLM judge (Sonnet 5) evaluates the
+              checklist from six rendered views. The aggregate score averages all 240 tasks per model and counts render failures as zero.
             </p>
           </div>
           <div class="figure-card">
@@ -196,25 +196,22 @@
           <div class="section-head">
             <div>
               <div class="kicker">Model heterogeneity</div>
-              <h2>There is no universally best feedback channel.</h2>
+              <h2>Results differ by model.</h2>
             </div>
-            <p>Aggregate trends are positive, but individual models use—or misuse—the same signal differently.</p>
+            <p>Aggregate scores increase in most conditions, while individual models respond differently to the same feedback.</p>
           </div>
           <div class="card-grid">
             <article class="card">
               <h3>Claude Opus 4.8</h3>
-              <p>Best with verdicts + renders: 0.752 → 0.923 (+0.171), reaching full score on 218 / 240 tasks.</p>
+              <p>Highest result with verdicts + renders: 0.752 → 0.923 (+0.171), reaching full score on 218 / 240 tasks.</p>
             </article>
             <article class="card">
               <h3>Claude Sonnet 5</h3>
-              <p>Best with per-item verdicts alone: 0.727 → 0.947 (+0.220). Adding renders did not improve the final mean further.</p>
+              <p>Highest result with per-item verdicts alone: 0.727 → 0.947 (+0.220). Adding renders did not improve the final mean further.</p>
             </article>
             <article class="card">
               <h3>Claude Sonnet 4.6</h3>
-              <p>
-                The major exception: only render-only is roughly neutral (+0.001); every other condition lowers aggregate score, partly through
-                reduced render success.
-              </p>
+              <p>Render-only is roughly neutral (+0.001); every other condition lowers the aggregate score, partly through reduced render success.</p>
             </article>
           </div>
         </div>
@@ -222,49 +219,12 @@
 
       <section class="section">
         <div class="shell">
-          <div class="warning">
-            <span class="warning-icon">!</span>
-            <div>
-              <h3>Current checklist feedback is not independent of the benchmark.</h3>
-              <p>
-                The quality loop feeds back the benchmark’s own checklist and Sonnet 5 item judgments, then reports progress using that same
-                framework. This creates evaluator leakage and can reward adapting to judge behavior rather than improving artifact quality. The
-                present result is best read as “models can optimize against benchmark feedback,” not yet as an independent estimate of real
-                user-facing improvement.
-              </p>
-            </div>
-          </div>
-          <div class="section-head" style="margin-top: 66px">
-            <div>
-              <div class="kicker">Next experiment</div>
-              <h2>Decouple feedback from final evaluation.</h2>
-            </div>
-            <p>The strongest follow-up is a crossed design where feedback source and final judge vary independently.</p>
-          </div>
-          <div class="card-grid">
-            <article class="card">
-              <span class="number">01</span>
-              <h3>Separate critic and judge</h3>
-              <p>
-                Use a feedback verifier with a different model family and prompt from the held-out final evaluator; record their agreement and
-                disagreement.
-              </p>
-            </article>
-            <article class="card">
-              <span class="number">02</span>
-              <h3>Public and hidden rubrics</h3>
-              <p>
-                Feed requested-change items, but reserve preservation, validity, and side-effect checks for final scoring to detect reward hacking.
-              </p>
-            </article>
-            <article class="card">
-              <span class="number">03</span>
-              <h3>Independent calibration set</h3>
-              <p>
-                Add human or adjudicated labels for a stratified holdout, including regressions where checklist score rises while overall artifact
-                quality falls.
-              </p>
-            </article>
+          <div class="note">
+            <h3>Note on the current feedback setup</h3>
+            <p>
+              Checklist-based feedback and final scoring currently use the same benchmark rubric and VLM judge (Sonnet 5). These experiments therefore
+              report improvement under the current setup. A later experiment will use a separate feedback signal.
+            </p>
           </div>
         </div>
       </section>
@@ -272,8 +232,8 @@
 
     <footer class="site-footer">
       <div class="shell footer-wrap">
-        <span>DECK · Feedback-improvement experiments · Hardest-10 subset</span>
-        <a href="./verifier.html">Next: verifier reliability →</a>
+        <span>DECK · Feedback loops</span>
+        <a href="./verifier.html">Next: verifier experiments →</a>
       </div>
     </footer>
     <script src="./assets/js/site.js"></script>

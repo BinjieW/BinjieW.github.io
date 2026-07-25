@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="DECK verifier reliability audit and exploratory CLIP-based verifier results." />
-    <title>Verifier reliability · DECK</title>
+    <meta name="description" content="DECK experiments with CLIP-based visual signals and planned agent-generated reference renders." />
+    <title>Verifier experiments · DECK</title>
     <link rel="stylesheet" href="./assets/css/site.css" />
   </head>
   <body>
@@ -27,15 +27,15 @@
     <main id="main">
       <section class="page-hero">
         <div class="shell">
-          <div class="crumbs"><a href="./index.html">DECK</a> / Verifier reliability</div>
+          <div class="crumbs"><a href="./index.html">DECK</a> / Verifier experiments</div>
           <div class="page-hero-grid">
             <div>
-              <div class="kicker">RQ 3 · Measurement validity</div>
-              <h1>A stronger judge cannot recover evidence that was never captured.</h1>
+              <div class="kicker">Verifier experiments</div>
+              <h1>Additional visual signals for artifact evaluation.</h1>
             </div>
             <p class="lead">
-              Our audit shows that error comes from four places: task definition, evidence generation, verifier modality, and response protocol.
-              Sonnet 5 capability is only one part of the system.
+              We tested two CLIP-based scores on existing benchmark renders. Their separation is limited, so they are not currently useful as
+              standalone verifiers. The next experiment will use an agent to create task-specific reference renders.
             </p>
           </div>
         </div>
@@ -43,146 +43,10 @@
 
       <section class="section tight">
         <div class="shell metric-grid">
-          <div class="metric"><strong>240</strong><span>unique Hardest-10 tasks audited</span></div>
-          <div class="metric"><strong>129</strong><span>P0 task or protocol fixes</span></div>
-          <div class="metric"><strong>≥7</strong><span>same pixels, opposite verdict groups</span></div>
-          <div class="metric"><strong>402</strong><span>execution failures mixed into score</span></div>
-        </div>
-      </section>
-
-      <section class="section tint">
-        <div class="shell">
-          <div class="warning">
-            <span class="warning-icon">!</span>
-            <div>
-              <h3>Level 1’s judgment failures are primarily a measurement problem—not model inability.</h3>
-              <p>
-                All 92 observed zero-score L1 outputs made the intended literal or parameter change and had no render failure. The audit identifies 59
-                clear false negatives, 11 semantically invalid tasks, and 22 edits whose target was too small, normalized away, or occluded. A VLM
-                cannot reliably infer global dimensions from independently normalized images or metadata from RGB.
-              </p>
-            </div>
-          </div>
-          <div class="section-head" style="margin-top: 64px">
-            <div>
-              <div class="kicker">Failure taxonomy</div>
-              <h2>The bottleneck changes with task type.</h2>
-            </div>
-            <p>Each level needs evidence that matches the fact being asserted.</p>
-          </div>
-          <div class="level-list">
-            <article class="level">
-              <small>L1 · Severe contamination</small>
-              <h3>Scale & visibility</h3>
-              <p>Independent normalization hides size changes; small or internal targets disappear from views.</p>
-            </article>
-            <article class="level">
-              <small>L2 · Partially usable</small>
-              <h3>Occluded local geometry</h3>
-              <p>Some failures are real, but identical pixels receive different labels and details remain hidden.</p>
-            </article>
-            <article class="level">
-              <small>L3 · Hybrid needed</small>
-              <h3>Parameters & metadata</h3>
-              <p>Object names and exact values are scene-state facts, not reliably visible image properties.</p>
-            </article>
-            <article class="level">
-              <small>L4 · Modality mismatch</small>
-              <h3>Topology</h3>
-              <p>Visual contact does not prove a merge; a Boolean union or through-hole needs mesh inspection.</p>
-            </article>
-            <article class="level">
-              <small>L5 · Multi-judge</small>
-              <h3>Style & preservation</h3>
-              <p>Subjective semantics need anchors and a separate check that object identity remains intact.</p>
-            </article>
-            <article class="level">
-              <small>L6 · Coverage + relations</small>
-              <h3>Complex scenes</h3>
-              <p>Object existence, relative scale, support, occlusion, and global coherence must be disentangled.</p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="shell">
-          <div class="section-head">
-            <div>
-              <div class="kicker">Target verification architecture</div>
-              <h2>Route each assertion to the evidence it needs.</h2>
-            </div>
-            <p>
-              The proposed evaluator makes “no evidence,” invalid tasks, runtime failure, and judge errors first-class states instead of silently
-              converting all of them to model failure.
-            </p>
-          </div>
-          <div class="workflow">
-            <div class="workflow-step">
-              <span>Gate 0–1</span>
-              <strong>Lint + oracle</strong>
-              <p>Check task semantics and whether an official edit produces measurable evidence.</p>
-            </div>
-            <div class="workflow-step">
-              <span>Stage 2</span>
-              <strong>Execution</strong>
-              <p>Freeze Blender environment; report runtime status separately from task score.</p>
-            </div>
-            <div class="workflow-step">
-              <span>Stage 3</span>
-              <strong>Scene snapshot</strong>
-              <p>Capture objects, transforms, materials, modifiers, mesh, and relation graph.</p>
-            </div>
-            <div class="workflow-step">
-              <span>Stage 4</span>
-              <strong>Evidence render</strong>
-              <p>Shared cameras plus RGB, ID, depth, normals, wireframe, and target close-ups.</p>
-            </div>
-            <div class="workflow-step">
-              <span>Stage 5–6</span>
-              <strong>Route + adjudicate</strong>
-              <p>Typed deterministic checks first; VLMs for semantics with disagreement and abstention.</p>
-            </div>
-          </div>
-
-          <div class="table-wrap" style="margin-top: 30px" role="region" aria-label="Verifier task classes" tabindex="0">
-            <table>
-              <thead>
-                <tr>
-                  <th>Task class</th>
-                  <th>Count</th>
-                  <th>Recommended verifier</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>A · Visually retainable</td>
-                  <td>15</td>
-                  <td>Task-aware VLM + protocol guards</td>
-                  <td>Keep, calibrate</td>
-                </tr>
-                <tr>
-                  <td>B · Hybrid required</td>
-                  <td>142</td>
-                  <td>Scene/geometry checks + targeted visual evidence</td>
-                  <td>Redesign evidence</td>
-                </tr>
-                <tr>
-                  <td>C · Not currently scoreable</td>
-                  <td>3</td>
-                  <td>None under current task definition</td>
-                  <td>Remove or rewrite</td>
-                </tr>
-                <tr>
-                  <td>D · Semantic multi-judge</td>
-                  <td>80</td>
-                  <td>Structured checks + anchored, cross-family VLMs</td>
-                  <td>Add adjudication</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          <div class="metric"><strong>3,000</strong><span>checklist items analyzed</span></div>
+          <div class="metric"><strong>6</strong><span>edit levels</span></div>
+          <div class="metric"><strong>0.621</strong><span>contrastive CLIP macro AUC</span></div>
+          <div class="metric"><strong>0.636</strong><span>directional CLIP macro AUC</span></div>
         </div>
       </section>
 
@@ -190,12 +54,12 @@
         <div class="shell">
           <div class="section-head">
             <div>
-              <div class="kicker">Exploratory sidecar · 3,000 items</div>
-              <h2>Can CLIP provide a cheap independent signal?</h2>
+              <div class="kicker">CLIP experiments · 3,000 items</div>
+              <h2>Two image-based scores.</h2>
             </div>
             <p>
-              We compare two six-view CLIP scores against existing Sonnet 5 YES/NO checklist labels. They are useful ranking signals, but not
-              replacements for typed verification.
+              We compare two six-view CLIP scores against existing Sonnet 5 YES/NO checklist labels. Both produce only limited separation between the
+              two groups.
             </p>
           </div>
           <div class="split">
@@ -215,11 +79,11 @@
           <div class="finding-grid">
             <article class="finding" style="background: #285b53">
               <strong>0.621 AUC</strong>
-              <p>Contrastive CLIP macro AUC across L1–L6. Strongest on global color/material changes.</p>
+              <p>Contrastive CLIP macro AUC across L1–L6. The clearest separation appears on global color and material changes.</p>
             </article>
             <article class="finding coral">
               <strong>0.636 AUC</strong>
-              <p>Directional CLIP macro AUC. Slightly stronger overall, still only moderate separation.</p>
+              <p>Directional CLIP macro AUC. The overall separation remains limited.</p>
             </article>
           </div>
         </div>
@@ -230,12 +94,9 @@
           <div class="section-head">
             <div>
               <div class="kicker">Score distributions</div>
-              <h2>Signal varies substantially by level.</h2>
+              <h2>Score distributions by level.</h2>
             </div>
-            <p>
-              YES means Sonnet 5 judged the checklist item satisfied. These labels are not independent human truth, and Sonnet 5 also generated the
-              CLIP captions.
-            </p>
+            <p>YES and NO are the existing checklist labels from the VLM judge (Sonnet 5).</p>
           </div>
           <div class="split">
             <div class="figure-card">
@@ -255,18 +116,15 @@
           <div class="section-head">
             <div>
               <div class="kicker">Case studies</div>
-              <h2>What the embedding scores see—and miss.</h2>
+              <h2>Example score behavior.</h2>
             </div>
-            <p>
-              “Effective” means agreement with the existing verifier label. “Ineffective” means a high-confidence disagreement, not necessarily that
-              Sonnet 5 is ground truth.
-            </p>
+            <p>The examples show cases where each CLIP score agrees or disagrees with the existing checklist label.</p>
           </div>
           <div class="case-grid">
             <article class="case">
               <img src="./assets/figures/cases/contrastive_effective.png" alt="Gold-to-red recoloring case study" />
               <div class="case-body">
-                <h3>Contrastive works · global recoloring</h3>
+                <h3>Contrastive agreement · global recoloring</h3>
                 <p>
                   Gold → red is visible in every view. Positive and negative captions differ primarily in color, producing a 98.8th-percentile YES
                   score.
@@ -276,24 +134,24 @@
             <article class="case">
               <img src="./assets/figures/cases/contrastive_ineffective.png" alt="Small door in lighthouse scene case study" />
               <div class="case-body">
-                <h3>Contrastive fails · localized door</h3>
+                <h3>Contrastive disagreement · localized door</h3>
                 <p>
-                  The wooden door occupies a small region inside a large scene rebuild. Whole-image semantics dominate, producing a high-confidence
-                  false negative.
+                  The wooden door occupies a small region inside a large scene rebuild. Whole-image semantics dominate, producing a high-confidence NO
+                  score.
                 </p>
               </div>
             </article>
             <article class="case">
               <img src="./assets/figures/cases/directional_effective.png" alt="Yellow-to-blue cam disk case study" />
               <div class="case-body">
-                <h3>Directional works · clean edit direction</h3>
+                <h3>Directional agreement · color edit</h3>
                 <p>Object and framing remain stable while yellow becomes blue. All six image-difference vectors align with the text change.</p>
               </div>
             </article>
             <article class="case">
               <img src="./assets/figures/cases/directional_ineffective.png" alt="Organic extrusion preservation failure case study" />
               <div class="case-body">
-                <h3>Directional fails · preservation constraint</h3>
+                <h3>Directional disagreement · preservation constraint</h3>
                 <p>
                   The artifact moves strongly toward “organic,” but loses its extrusion identity. Directional CLIP rewards change without enforcing
                   the invariant.
@@ -303,7 +161,6 @@
           </div>
           <div class="downloads" style="margin-top: 24px">
             <a class="download" href="./assets/reports/hard10-clip-verifier.pdf">PDF · CLIP sidecar report</a>
-            <a class="download" href="./assets/reports/deck-hardest10-audit.pdf">PDF · Hardest-10 audit</a>
           </div>
         </div>
       </section>
@@ -312,29 +169,31 @@
         <div class="shell">
           <div class="section-head">
             <div>
-              <div class="kicker">Current conclusion</div>
-              <h2>Use cheap signals to route—not to decide everything.</h2>
+              <div class="kicker">Next experiment</div>
+              <h2>Agent-generated reference renders.</h2>
             </div>
             <p>
-              The practical evaluator is a cascade: deterministic scene checks for measurable facts, cheap embedding or CV signals for triage, and
-              task-aware VLM adjudication for unresolved semantics.
+              The next experiment will generate a reference implementation for each edit request and use its renders as task-specific comparison
+              evidence.
             </p>
           </div>
           <div class="card-grid">
             <article class="card">
               <span class="number">01</span>
-              <h3>Deterministic first</h3>
-              <p>Names, dimensions, counts, topology, and relations should be measured from the final scene.</p>
+              <h3>Generate a reference edit</h3>
+              <p>An agent receives the source bpy program and edit request, then produces a reference implementation for that task.</p>
             </article>
             <article class="card">
               <span class="number">02</span>
-              <h3>Targeted visual evidence</h3>
-              <p>Share cameras across before/after and add close-up, section, ID, depth, and wireframe views.</p>
+              <h3>Render matched views</h3>
+              <p>
+                The source, model output, and reference implementation are rendered with shared cameras, including task-specific views when needed.
+              </p>
             </article>
             <article class="card">
               <span class="number">03</span>
-              <h3>Explicit uncertainty</h3>
-              <p>Report no-evidence, invalid-task, judge-error, and disagreement separately from model failure.</p>
+              <h3>Compare with a VLM judge</h3>
+              <p>The VLM judge (Sonnet 5) receives the model and reference renders together; reference-generation success is recorded separately.</p>
             </article>
           </div>
         </div>
@@ -343,8 +202,8 @@
 
     <footer class="site-footer">
       <div class="shell footer-wrap">
-        <span>DECK · Verifier reliability audit · 240 tasks / 2,640 evaluations</span>
-        <a href="./gallery.html">Next: interactive artifacts →</a>
+        <span>DECK · Verifier experiments</span>
+        <a href="./gallery.html">Next: 3D gallery →</a>
       </div>
     </footer>
     <script src="./assets/js/site.js"></script>

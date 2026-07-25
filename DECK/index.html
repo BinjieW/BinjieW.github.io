@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="DECK is a benchmark for evaluating and improving LLMs that edit executable artifact-generating code." />
-    <title>DECK — Editing code that makes things</title>
+    <title>DECK — Progress update</title>
     <link rel="stylesheet" href="./assets/css/site.css" />
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.3.1/model-viewer.min.js"></script>
   </head>
@@ -32,11 +32,11 @@
       <section class="hero">
         <div class="shell hero-grid">
           <div>
-            <div class="eyebrow">Advisor brief · July 2026</div>
-            <h1>Editing code that <em>makes things.</em></h1>
+            <div class="eyebrow">Progress update · July 2026</div>
+            <h1>Editing Blender Python through <em>compiled 3D artifacts.</em></h1>
             <p class="hero-copy">
-              DECK studies whether language models can modify executable programs whose correctness lives in the artifact they produce—not only in
-              source code or unit tests. Our first domain is Blender Python and editable 3D geometry.
+              DECK studies whether language models can modify executable programs whose correctness lives in the artifact they produce. Our first
+              domain is Blender Python and editable 3D geometry.
             </p>
             <div class="button-row">
               <a class="button" href="./benchmark.html">See the benchmark</a>
@@ -68,7 +68,7 @@
       <div class="shell stat-rail" aria-label="Project snapshot">
         <div class="stat"><strong>6</strong><span>edit difficulty levels</span></div>
         <div class="stat"><strong>10</strong><span>shared Hardest-10 objects</span></div>
-        <div class="stat"><strong>2,640</strong><span>baseline evaluations</span></div>
+        <div class="stat"><strong>2,640</strong><span>edited programs scored (240 per model)</span></div>
         <div class="stat"><strong>11</strong><span>editing models tested</span></div>
       </div>
 
@@ -76,28 +76,26 @@
         <div class="shell">
           <div class="section-head">
             <div>
-              <div class="kicker">The project in one minute</div>
-              <h2>A benchmark, a stress test, and an improvement loop.</h2>
+              <div class="kicker">Project components</div>
+              <h2>A source-code corpus, a difficulty-graded benchmark, and an improvement loop.</h2>
             </div>
-            <p>
-              The core shift is from asking “does the code run?” to asking “did the requested change appear in the compiled artifact, without
-              destroying what should remain?”
-            </p>
+            <p>The current work covers source-code preparation, controlled editing experiments, and iterative repair using different feedback.</p>
           </div>
           <div class="card-grid">
             <article class="card">
               <span class="number">01</span>
-              <h3>Artifact-grounded editing</h3>
+              <h3>Editable source corpus</h3>
               <p>
-                A model receives an existing Blender Python program and a modification instruction. It must return executable code whose rendered 3D
-                output satisfies the edit.
+                A reconstruction harness turns open-source OpenSCAD programs into readable Blender Python through repeated generation by one agent,
+                matched-view rendering, and independent review by another agent.
               </p>
             </article>
             <article class="card">
               <span class="number">02</span>
-              <h3>Controlled difficulty</h3>
+              <h3>Difficulty-graded benchmark</h3>
               <p>
-                Six levels move from literal parameter changes to component logic, topology, semantic restyling, and multi-object scene composition.
+                A model edits an existing Blender Python program. Six levels cover parameter changes, component logic, topology, semantic restyling,
+                and multi-object scene composition.
               </p>
             </article>
             <article class="card">
@@ -116,16 +114,19 @@
         <div class="shell">
           <div class="section-head">
             <div>
-              <div class="kicker">Evaluation pipeline</div>
-              <h2>Source code to visual evidence.</h2>
+              <div class="kicker">Benchmark procedure</div>
+              <h2>From source program to scored edit.</h2>
             </div>
-            <p>Every model sees the same source and edit request. We compile, render six canonical views, and evaluate atomic checklist items.</p>
+            <p>
+              Every model receives the same source and edit request. We run the revised program, render six fixed views, and use a VLM judge (Sonnet
+              5) to evaluate the checklist items.
+            </p>
           </div>
           <div class="workflow" aria-label="DECK workflow">
             <div class="workflow-step">
               <span>Input</span>
               <strong>Existing script</strong>
-              <p>Editable bpy code reconstructed from real programs.</p>
+              <p>Reviewed bpy code produced by the source reconstruction harness.</p>
             </div>
             <div class="workflow-step">
               <span>Task</span>
@@ -144,8 +145,8 @@
             </div>
             <div class="workflow-step">
               <span>Measure</span>
-              <strong>Checklist judge</strong>
-              <p>Item-level satisfaction plus execution status.</p>
+              <strong>VLM judge (Sonnet 5)</strong>
+              <p>Item-level checklist judgments from the rendered views.</p>
             </div>
           </div>
         </div>
@@ -155,8 +156,8 @@
         <div class="shell">
           <div class="section-head">
             <div>
-              <div class="kicker">Current benchmark snapshot</div>
-              <h2>Performance bends sharply at semantic and scene edits.</h2>
+              <div class="kicker">Current benchmark results</div>
+              <h2>Hardest-10 results by model and edit level.</h2>
             </div>
             <p>
               This figure has been regenerated on the exact Hardest-10 subset used by the feedback-improvement experiments: 10 objects × 6 levels × 4
@@ -166,8 +167,8 @@
           <div class="figure-card">
             <img src="./assets/figures/hardest10-main-figure.svg" alt="Hardest-10 overall model ranking and heatmap of scores by six edit levels" />
             <div class="figure-meta">
-              <span>Observed checklist score · Sonnet 5 judge · 2,640 evaluations</span>
-              <a href="./benchmark.html">Open full table and interpretation →</a>
+              <span>VLM checklist score (Sonnet 5) · 11 models × 240 tasks</span>
+              <a href="./benchmark.html">Open the full table →</a>
             </div>
           </div>
         </div>
@@ -177,12 +178,12 @@
         <div class="shell">
           <div class="section-head">
             <div>
-              <div class="kicker">What we have learned</div>
-              <h2>Models can improve—measurement is now the bottleneck.</h2>
+              <div class="kicker">Feedback-loop results</div>
+              <h2>Current results from execution and quality feedback.</h2>
             </div>
             <p>
-              Execution feedback is highly actionable. Quality feedback also helps, but its apparent gain is entangled with the benchmark’s own
-              checklist and judge.
+              Blender error messages repair most initially non-rendering programs. The quality-feedback experiment compares six signals on the same
+              Hardest-10 starting outputs.
             </p>
           </div>
           <div class="finding-grid">
@@ -200,16 +201,12 @@
               </p>
             </article>
           </div>
-          <div class="warning" style="margin-top: 22px">
-            <span class="warning-icon">!</span>
-            <div>
-              <h3>Important validity gap: feedback and final measurement are coupled.</h3>
-              <p>
-                The current checklist feedback comes from the benchmark framework itself—the same task rubric and Sonnet 5 judge family used to score
-                progress. The next design must separate the feedback signal from the final evaluator, add hidden preservation checks, and calibrate
-                against independent or human judgments.
-              </p>
-            </div>
+          <div class="note" style="margin-top: 22px">
+            <h3>Note on the current feedback setup</h3>
+            <p>
+              Checklist feedback and final scoring currently use the same benchmark rubric and VLM judge (Sonnet 5). A later experiment will separate
+              the feedback and evaluation signals.
+            </p>
           </div>
         </div>
       </section>
@@ -218,31 +215,31 @@
         <div class="shell">
           <div class="section-head">
             <div>
-              <div class="kicker">Drill down</div>
-              <h2>Evidence is organized by research question.</h2>
+              <div class="kicker">Project pages</div>
+              <h2>Methods and results by topic.</h2>
             </div>
-            <p>Each subpage keeps the headline conclusion next to its setup, caveats, and source data.</p>
+            <p>Each page describes one part of the project and links to the corresponding figures, tables, or interactive examples.</p>
           </div>
           <div class="link-cards">
             <a class="link-card" href="./benchmark.html">
-              <span>RQ 1</span>
-              <h3>Who can edit?</h3>
-              <p>Difficulty design, full Hardest-10 table, model trends, and execution confounds.</p>
+              <span>Benchmark</span>
+              <h3>Dataset and benchmark results</h3>
+              <p>Hardest-10 subset, six difficulty levels, model results, and notes from manual verification.</p>
             </a>
             <a class="link-card" href="./feedback.html">
-              <span>RQ 2</span>
-              <h3>Can feedback help?</h3>
-              <p>Error repair, six quality-feedback conditions, trajectories, and coupling risk.</p>
+              <span>Feedback loops</span>
+              <h3>Feedback experiments</h3>
+              <p>Blender error repair and six quality-feedback conditions on the Hardest-10 subset.</p>
             </a>
             <a class="link-card" href="./verifier.html">
-              <span>RQ 3</span>
-              <h3>Can we trust the judge?</h3>
-              <p>240-task audit, failure taxonomy, typed verifier plan, and CLIP sidecar.</p>
+              <span>Verifier</span>
+              <h3>Verifier experiments</h3>
+              <p>Current CLIP-based visual signals and the planned reference-render experiment.</p>
             </a>
             <a class="link-card" href="./gallery.html">
-              <span>Artifacts</span>
-              <h3>What is being edited?</h3>
-              <p>Drag compiled DECK objects and compare them with BlenderLLM’s BlendNet examples.</p>
+              <span>3D gallery</span>
+              <h3>Compiled source examples</h3>
+              <p>Interactive DECK source objects and representative BlenderLLM BlendNet examples.</p>
             </a>
           </div>
         </div>
@@ -251,7 +248,7 @@
 
     <footer class="site-footer">
       <div class="shell footer-wrap">
-        <span>DECK · Artifact-based LLM code editing · Research snapshot, July 2026</span>
+        <span>DECK · Progress update · July 2026</span>
         <a href="https://github.com/BinjieW/DECK">Project repository ↗</a>
       </div>
     </footer>
