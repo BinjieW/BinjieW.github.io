@@ -173,8 +173,8 @@
               <h2>Agent-generated reference renders.</h2>
             </div>
             <p>
-              The next experiment will generate a reference implementation for each edit request and use its renders as task-specific comparison
-              evidence.
+              The next experiment will generate a reference implementation for each edit request, render it from matched views, and use CV similarity
+              metrics to compare the model output with those reference renders.
             </p>
           </div>
           <div class="card-grid">
@@ -192,8 +192,11 @@
             </article>
             <article class="card">
               <span class="number">03</span>
-              <h3>Compare with a VLM judge</h3>
-              <p>The VLM judge (Sonnet 5) receives the model and reference renders together; reference-generation success is recorded separately.</p>
+              <h3>Compute CV similarity</h3>
+              <p>
+                CV metrics compare the model renders with the matched reference renders. Reference-generation success is recorded separately from the
+                similarity score.
+              </p>
             </article>
           </div>
         </div>
