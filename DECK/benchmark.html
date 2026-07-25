@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="DECK Hardest-10 benchmark design, results, and model-level analysis."
+    />
+    <title>Benchmark · DECK</title>
+    <link rel="stylesheet" href="./assets/css/site.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="shell nav-wrap">
+        <a class="brand" href="./index.html" aria-label="DECK home">
+          <span class="brand-mark">D</span><span>DECK</span>
+        </a>
+        <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">Menu</button>
+        <nav class="site-nav" aria-label="Primary navigation">
+          <a href="./index.html" data-page="index.html">Overview</a>
+          <a href="./benchmark.html" data-page="benchmark.html">Benchmark</a>
+          <a href="./feedback.html" data-page="feedback.html">Feedback loops</a>
+          <a href="./verifier.html" data-page="verifier.html">Verifier</a>
+          <a href="./gallery.html" data-page="gallery.html">3D gallery</a>
+          <span class="nav-status">Research in progress</span>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="page-hero">
+        <div class="shell">
+          <div class="crumbs"><a href="./index.html">DECK</a> / Benchmark</div>
+          <div class="page-hero-grid">
+            <div>
+              <div class="kicker">RQ 1 · Model capability</div>
+              <h1>Can an LLM edit a program by reasoning about what it renders?</h1>
+            </div>
+            <p class="lead">
+              Hardest-10 is the shared subset for both the main model comparison and the feedback experiments.
+              That alignment makes every headline result traceable to the same 240 edit requests per model.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section tight">
+        <div class="shell metric-grid">
+          <div class="metric"><strong>10</strong><span>reconstructed source objects</span></div>
+          <div class="metric"><strong>240</strong><span>unique edit tasks</span></div>
+          <div class="metric"><strong>11</strong><span>editing models</span></div>
+          <div class="metric"><strong>2,640</strong><span>model-task evaluations</span></div>
+        </div>
+      </section>
+
+      <section class="section tint">
+        <div class="shell">
+          <div class="section-head">
+            <div>
+              <div class="kicker">Difficulty gradient</div>
+              <h2>Six qualitatively different kinds of edit.</h2>
+            </div>
+            <p>
+              The levels adapt the SOLO taxonomy: difficulty grows with how many code regions and artifact
+              relationships must be understood together—not simply with prompt length.
+            </p>
+          </div>
+          <div class="level-list">
+            <article class="level">
+              <small>Level 1 · Unistructural</small>
+              <h3>Single parameter</h3>
+              <p>Change an explicit color, size, position, or rotation value already present in code.</p>
+            </article>
+            <article class="level">
+              <small>Level 2 · Unistructural</small>
+              <h3>Single component</h3>
+              <p>Coordinate a loop, primitive type, or local spatial rule within one component.</p>
+            </article>
+            <article class="level">
+              <small>Level 3 · Multistructural</small>
+              <h3>Multiple components</h3>
+              <p>Apply several independent changes across different code blocks without interference.</p>
+            </article>
+            <article class="level">
+              <small>Level 4 · Relational</small>
+              <h3>Topology & structure</h3>
+              <p>Add holes, merge geometry, or integrate new features with existing object relationships.</p>
+            </article>
+            <article class="level">
+              <small>Level 5 · Relational</small>
+              <h3>Semantic restyling</h3>
+              <p>Interpret an abstract style while preserving the original object’s recognizable identity.</p>
+            </article>
+            <article class="level">
+              <small>Level 6 · Extended abstract</small>
+              <h3>Scene composition</h3>
+              <p>Build multiple new objects, environmental context, plausible scale, lighting, and relations.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="shell">
+          <div class="section-head">
+            <div>
+              <div class="kicker">Main figure · regenerated</div>
+              <h2>The exact Hardest-10 snapshot.</h2>
+            </div>
+            <p>
+              Overall score is the mean item-level checklist score across all 240 tasks for a model. Render
+              failures count as zero in this observed benchmark view.
+            </p>
+          </div>
+          <div class="figure-card">
+            <img
+              src="./assets/figures/hardest10-main-figure.svg"
+              alt="Hardest-10 overall model score bars and per-level heatmap"
+            />
+            <div class="figure-meta">
+              <span>10 objects × 6 levels × 4 edits · 11 models · Sonnet 5 judge</span>
+              <a href="./assets/data/hardest10-model-results.csv">Download CSV ↓</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section tight">
+        <div class="shell">
+          <div class="section-head">
+            <div>
+              <div class="kicker">Main table · same subset</div>
+              <h2>Observed results by model and level.</h2>
+            </div>
+            <p>
+              “Exec.” is the round-0 Blender render success rate. Small ranking differences should not be
+              interpreted without the verifier audit below.
+            </p>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>Model</th>
+                  <th>Overall</th>
+                  <th>L1</th>
+                  <th>L2</th>
+                  <th>L3</th>
+                  <th>L4</th>
+                  <th>L5</th>
+                  <th>L6</th>
+                  <th>Exec.</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td><td>Claude Opus 4.8</td><td class="overall">0.752</td><td>0.800</td><td>0.838</td><td>0.825</td><td>0.602</td><td>0.825</td><td>0.622</td><td>96.7%</td>
+                </tr>
+                <tr>
+                  <td>2</td><td>Claude Sonnet 5</td><td class="overall">0.727</td><td>0.800</td><td>0.788</td><td>0.758</td><td>0.596</td><td>0.842</td><td>0.581</td><td>98.8%</td>
+                </tr>
+                <tr>
+                  <td>3</td><td>GPT-5.5</td><td class="overall">0.669</td><td>0.800</td><td>0.838</td><td>0.750</td><td>0.683</td><td>0.475</td><td>0.470</td><td>85.0%</td>
+                </tr>
+                <tr>
+                  <td>4</td><td>Claude Sonnet 4.6</td><td class="overall">0.642</td><td>0.775</td><td>0.788</td><td>0.742</td><td>0.606</td><td>0.658</td><td>0.282</td><td>89.2%</td>
+                </tr>
+                <tr>
+                  <td>5</td><td>GPT-5.6 Terra</td><td class="overall">0.601</td><td>0.800</td><td>0.813</td><td>0.775</td><td>0.613</td><td>0.490</td><td>0.114</td><td>77.9%</td>
+                </tr>
+                <tr>
+                  <td>6</td><td>Claude Haiku 4.5</td><td class="overall">0.599</td><td>0.800</td><td>0.713</td><td>0.725</td><td>0.521</td><td>0.540</td><td>0.299</td><td>87.9%</td>
+                </tr>
+                <tr>
+                  <td>7</td><td>GPT-OSS-120B</td><td class="overall">0.594</td><td>0.800</td><td>0.813</td><td>0.758</td><td>0.560</td><td>0.448</td><td>0.184</td><td>88.8%</td>
+                </tr>
+                <tr>
+                  <td>8</td><td>GPT-5.6 Sol</td><td class="overall">0.583</td><td>0.775</td><td>0.838</td><td>0.700</td><td>0.538</td><td>0.483</td><td>0.163</td><td>76.7%</td>
+                </tr>
+                <tr>
+                  <td>9</td><td>Gemma 4 31B</td><td class="overall">0.576</td><td>0.800</td><td>0.750</td><td>0.758</td><td>0.527</td><td>0.406</td><td>0.216</td><td>85.8%</td>
+                </tr>
+                <tr>
+                  <td>10</td><td>GPT-5.6 Luna</td><td class="overall">0.564</td><td>0.750</td><td>0.813</td><td>0.775</td><td>0.625</td><td>0.371</td><td>0.051</td><td>75.4%</td>
+                </tr>
+                <tr>
+                  <td>11</td><td>Qwen3-Coder-Next</td><td class="overall">0.472</td><td>0.800</td><td>0.775</td><td>0.683</td><td>0.363</td><td>0.125</td><td>0.085</td><td>70.4%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="table-note">
+            Scores include the 2026-07-20 empty-judge response repair. They have not been corrected using the
+            later verifier audit. Machine-readable versions:
+            <a href="./assets/data/hardest10-model-results.csv">CSV</a> ·
+            <a href="./assets/data/hardest10-model-results.json">JSON</a>.
+          </p>
+        </div>
+      </section>
+
+      <section class="section tint">
+        <div class="shell">
+          <div class="warning">
+            <span class="warning-icon">!</span>
+            <div>
+              <h3>The table is an observed ranking, not corrected ground truth.</h3>
+              <p>
+                Level 1 is systematically contaminated by false negatives and independent scene normalization;
+                Levels 3–4 ask RGB views to verify metadata and topology; Levels 5–6 are heavily shaped by
+                Blender execution rate, occlusion, and subjective semantics. Treat the table as a measurement
+                of the current end-to-end pipeline, not a clean scalar of editing intelligence.
+              </p>
+            </div>
+          </div>
+          <div class="split" style="margin-top: 28px">
+            <div class="stack">
+              <article class="mini-card">
+                <h3>Strongest observed models</h3>
+                <p>
+                  Opus 4.8 (0.752) and Sonnet 5 (0.727) lead overall, with especially strong L5 scores and
+                  high execution success.
+                </p>
+              </article>
+              <article class="mini-card">
+                <h3>Execution is a separate capability</h3>
+                <p>
+                  The baseline contains 402 render failures. A model can understand the requested edit but
+                  still lose all task credit because it emitted an incompatible Blender API call.
+                </p>
+              </article>
+            </div>
+            <div class="stack">
+              <article class="mini-card">
+                <h3>Low levels are not yet “solved”</h3>
+                <p>
+                  The L1 ceiling around 0.8 is largely a verifier artifact: 92 observed zeros completed the
+                  intended code-side change and had no render failure.
+                </p>
+              </article>
+              <article class="mini-card">
+                <h3>Scene tasks expose a real gap</h3>
+                <p>
+                  Even after separating execution failures, L6 requires object completeness, scale,
+                  physical relationships, visibility, and coherent composition at once.
+                </p>
+              </article>
+            </div>
+          </div>
+          <div class="downloads" style="margin-top: 24px">
+            <a class="download" href="./assets/reports/deck-hardest10-audit.pdf">PDF · Hardest-10 audit</a>
+            <a class="download" href="./verifier.html">Read verifier reliability analysis →</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="shell footer-wrap">
+        <span>DECK · Artifact-based LLM code editing · Research snapshot, July 2026</span>
+        <a href="./feedback.html">Next: feedback loops →</a>
+      </div>
+    </footer>
+    <script src="./assets/js/site.js"></script>
+  </body>
+</html>

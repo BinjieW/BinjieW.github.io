@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Interactive compiled 3D examples from DECK ReconstructedBPY and BlenderLLM BlendNet."
+    />
+    <title>Interactive 3D gallery · DECK</title>
+    <link rel="stylesheet" href="./assets/css/site.css" />
+    <script
+      type="module"
+      src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.3.1/model-viewer.min.js"
+    ></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="shell nav-wrap">
+        <a class="brand" href="./index.html" aria-label="DECK home">
+          <span class="brand-mark">D</span><span>DECK</span>
+        </a>
+        <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">Menu</button>
+        <nav class="site-nav" aria-label="Primary navigation">
+          <a href="./index.html" data-page="index.html">Overview</a>
+          <a href="./benchmark.html" data-page="benchmark.html">Benchmark</a>
+          <a href="./feedback.html" data-page="feedback.html">Feedback loops</a>
+          <a href="./verifier.html" data-page="verifier.html">Verifier</a>
+          <a href="./gallery.html" data-page="gallery.html">3D gallery</a>
+          <span class="nav-status">Research in progress</span>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="page-hero">
+        <div class="shell">
+          <div class="crumbs"><a href="./index.html">DECK</a> / Interactive 3D gallery</div>
+          <div class="page-hero-grid">
+            <div>
+              <div class="kicker">Compiled artifacts · Drag to inspect</div>
+              <h1>The benchmark edits executable geometry—not screenshots.</h1>
+            </div>
+            <p class="lead">
+              Every object below is a GLB exported from a compiled Blender scene. Rotate with the mouse, zoom
+              with the wheel, and compare the visual scope of DECK’s reconstructed programs with representative
+              BlenderLLM BlendNet scripts.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section tight">
+        <div class="shell">
+          <div class="gallery-intro">
+            <article class="source-panel deck">
+              <div class="kicker">DECK · ReconstructedBPY</div>
+              <h2>Complex programs from real 3D sources</h2>
+              <p>
+                Open-source OpenSCAD programs are reconstructed as editable bpy code. The gallery spans
+                architecture, detailed ornamental geometry, and mechanical topology.
+              </p>
+            </article>
+            <article class="source-panel blendnet">
+              <div class="kicker">BlenderLLM · BlendNet</div>
+              <h2>Prompt–script pairs as a baseline source</h2>
+              <p>
+                BlendNet provides generated Blender scripts for common objects. These examples are among the
+                more complete items in the first rendered set and illustrate the earlier data regime.
+              </p>
+            </article>
+          </div>
+          <p class="table-note" style="margin-top: 16px">
+            This is an illustrative source comparison, not a quantitative head-to-head: the examples were
+            selected to make dataset scope visible, while the benchmark table uses the fixed Hardest-10 subset.
+          </p>
+        </div>
+      </section>
+
+      <section class="section tint">
+        <div class="shell">
+          <div class="section-head">
+            <div>
+              <div class="kicker">DECK source objects</div>
+              <h2>Reconstructed programs with richer structure.</h2>
+            </div>
+            <p>
+              These objects are representative of the broader ReconstructedBPY source pool. Hardest-10 draws
+              ten difficult programs from that pool for controlled editing experiments.
+            </p>
+          </div>
+          <div class="model-grid">
+            <article class="model-card">
+              <model-viewer
+                src="./assets/models/deck-fortress.glb"
+                poster="./assets/posters/deck-fortress.png"
+                alt="Interactive medieval fortress model"
+                camera-controls
+                touch-action="pan-y"
+                auto-rotate
+                rotation-per-second="10deg"
+                shadow-intensity="0.8"
+                environment-image="neutral"
+                loading="lazy"
+              ></model-viewer>
+              <div class="model-info">
+                <div class="model-info-top">
+                  <div>
+                    <h3>Medieval fortress generator</h3>
+                    <p>Architecture · towers, crenellations, roofs, gate, and courtyard · 405 exported objects</p>
+                  </div>
+                  <span class="tag">DECK</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="model-card">
+              <model-viewer
+                src="./assets/models/deck-temple-spire.glb"
+                poster="./assets/posters/deck-temple-spire.png"
+                alt="Interactive Sarvatobhadra temple spire model"
+                camera-controls
+                touch-action="pan-y"
+                auto-rotate
+                rotation-per-second="10deg"
+                shadow-intensity="0.8"
+                environment-image="neutral"
+                loading="lazy"
+              ></model-viewer>
+              <div class="model-info">
+                <div class="model-info-top">
+                  <div>
+                    <h3>Sarvatobhadra temple spire</h3>
+                    <p>Ornamental architecture · repeated storeys, ribs, projections, and cap · 535 exported objects</p>
+                  </div>
+                  <span class="tag">DECK</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="model-card">
+              <model-viewer
+                src="./assets/models/deck-helical-gears.glb"
+                poster="./assets/posters/deck-helical-gears.png"
+                alt="Interactive double helical gear model"
+                camera-controls
+                touch-action="pan-y"
+                auto-rotate
+                rotation-per-second="14deg"
+                shadow-intensity="0.9"
+                environment-image="neutral"
+                loading="lazy"
+              ></model-viewer>
+              <div class="model-info">
+                <div class="model-info-top">
+                  <div>
+                    <h3>Double helical gear</h3>
+                    <p>Mechanical geometry · herringbone teeth, bore, hub, and patterned cutouts</p>
+                  </div>
+                  <span class="tag">DECK</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="model-card">
+              <model-viewer
+                src="./assets/models/deck-brick-house.glb"
+                poster="./assets/posters/deck-brick-house.png"
+                alt="Interactive miniature brick and lumber house model"
+                camera-controls
+                touch-action="pan-y"
+                auto-rotate
+                rotation-per-second="11deg"
+                shadow-intensity="0.8"
+                environment-image="neutral"
+                loading="lazy"
+              ></model-viewer>
+              <div class="model-info">
+                <div class="model-info-top">
+                  <div>
+                    <h3>Miniature brick–lumber house</h3>
+                    <p>Architecture · tiled roof, siding, door, windows, trim, and layered facade</p>
+                  </div>
+                  <span class="tag">DECK</span>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="shell">
+          <div class="section-head">
+            <div>
+              <div class="kicker">BlenderLLM source examples</div>
+              <h2>Representative BlendNet objects.</h2>
+            </div>
+            <p>
+              BlendNet’s scripts remain useful for diversity and continuity with BlenderLLM, but many objects
+              rely on small arrangements of primitives and offer less structural editing depth.
+            </p>
+          </div>
+          <div class="model-grid">
+            <article class="model-card blendnet">
+              <model-viewer
+                src="./assets/models/blendnet-birthday-cake.glb"
+                poster="./assets/posters/blendnet-birthday-cake.png"
+                alt="Interactive BlendNet birthday cake model"
+                camera-controls
+                touch-action="pan-y"
+                auto-rotate
+                rotation-per-second="12deg"
+                shadow-intensity="0.8"
+                environment-image="neutral"
+                loading="lazy"
+              ></model-viewer>
+              <div class="model-info">
+                <div class="model-info-top">
+                  <div>
+                    <h3>Birthday cake</h3>
+                    <p>BlendNet index 3 · stacked cylinders, frosting tiers, and candles · 21 objects</p>
+                  </div>
+                  <span class="tag">BlendNet</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="model-card blendnet">
+              <model-viewer
+                src="./assets/models/blendnet-sofa.glb"
+                poster="./assets/posters/blendnet-sofa.png"
+                alt="Interactive BlendNet sofa model"
+                camera-controls
+                touch-action="pan-y"
+                auto-rotate
+                rotation-per-second="12deg"
+                shadow-intensity="0.8"
+                environment-image="neutral"
+                loading="lazy"
+              ></model-viewer>
+              <div class="model-info">
+                <div class="model-info-top">
+                  <div>
+                    <h3>Sofa</h3>
+                    <p>BlendNet index 42 · seat, back, armrests, and three cushions · 7 objects</p>
+                  </div>
+                  <span class="tag">BlendNet</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="model-card blendnet">
+              <model-viewer
+                src="./assets/models/blendnet-puzzle-cube.glb"
+                poster="./assets/posters/blendnet-puzzle-cube.png"
+                alt="Interactive BlendNet puzzle cube model"
+                camera-controls
+                touch-action="pan-y"
+                auto-rotate
+                rotation-per-second="14deg"
+                shadow-intensity="0.8"
+                environment-image="neutral"
+                loading="lazy"
+              ></model-viewer>
+              <div class="model-info">
+                <div class="model-info-top">
+                  <div>
+                    <h3>Puzzle cube</h3>
+                    <p>BlendNet index 67 · 3 × 3 × 3 grid of colored cubelets · 27 objects</p>
+                  </div>
+                  <span class="tag">BlendNet</span>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section dark">
+        <div class="shell">
+          <div class="section-head">
+            <div>
+              <div class="kicker">Why source complexity matters</div>
+              <h2>Editing depth depends on what the program exposes.</h2>
+            </div>
+            <p>
+              A benchmark needs scripts that support more than recoloring a primitive: reusable components,
+              meaningful parameters, topology, hierarchy, and spatial relations create room for qualitatively
+              different edits.
+            </p>
+          </div>
+          <div class="card-grid">
+            <article class="card">
+              <h3>Component correspondence</h3>
+              <p>Named program structures should map to visible artifact parts that an edit can target.</p>
+            </article>
+            <article class="card">
+              <h3>Relational changes</h3>
+              <p>Holes, joins, supports, repetition, and assemblies test integration beyond literal replacement.</p>
+            </article>
+            <article class="card">
+              <h3>Preservation pressure</h3>
+              <p>Richer artifacts reveal whether a requested change accidentally destroys unrelated structure.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="shell footer-wrap">
+        <span>DECK · Compiled GLB gallery · Mouse and touch interaction enabled</span>
+        <a href="./index.html">Back to overview ↑</a>
+      </div>
+    </footer>
+    <script src="./assets/js/site.js"></script>
+  </body>
+</html>

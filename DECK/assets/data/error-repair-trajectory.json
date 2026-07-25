@@ -1,0 +1,44 @@
+[
+  {
+    "round": 1,
+    "repaired_this_round": 227,
+    "cumulative_repaired": 227,
+    "cumulative_repair_rate": 0.5646766169154229
+  },
+  {
+    "round": 2,
+    "repaired_this_round": 126,
+    "cumulative_repaired": 353,
+    "cumulative_repair_rate": 0.8781094527363185
+  },
+  {
+    "round": 3,
+    "repaired_this_round": 28,
+    "cumulative_repaired": 381,
+    "cumulative_repair_rate": 0.9477611940298507
+  },
+  {
+    "round": 4,
+    "repaired_this_round": 7,
+    "cumulative_repaired": 388,
+    "cumulative_repair_rate": 0.9651741293532339
+  },
+  {
+    "round": 5,
+    "repaired_this_round": 2,
+    "cumulative_repaired": 390,
+    "cumulative_repair_rate": 0.9701492537313433
+  },
+  {
+    "round": 6,
+    "repaired_this_round": 3,
+    "cumulative_repaired": 393,
+    "cumulative_repair_rate": 0.9776119402985075
+  },
+  {
+    "round": 7,
+    "repaired_this_round": 3,
+    "cumulative_repaired": 396,
+    "cumulative_repair_rate": 0.9850746268656716
+  }
+]
