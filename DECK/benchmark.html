@@ -3,10 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta
-      name="description"
-      content="DECK Hardest-10 benchmark design, results, and model-level analysis."
-    />
+    <meta name="description" content="DECK Hardest-10 benchmark design, results, and model-level analysis." />
     <title>Benchmark · DECK</title>
     <link rel="stylesheet" href="./assets/css/site.css" />
   </head>
@@ -14,9 +11,7 @@
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header">
       <div class="shell nav-wrap">
-        <a class="brand" href="./index.html" aria-label="DECK home">
-          <span class="brand-mark">D</span><span>DECK</span>
-        </a>
+        <a class="brand" href="./index.html" aria-label="DECK home"> <span class="brand-mark">D</span><span>DECK</span> </a>
         <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">Menu</button>
         <nav class="site-nav" aria-label="Primary navigation">
           <a href="./index.html" data-page="index.html">Overview</a>
@@ -39,8 +34,8 @@
               <h1>Can an LLM edit a program by reasoning about what it renders?</h1>
             </div>
             <p class="lead">
-              Hardest-10 is the shared subset for both the main model comparison and the feedback experiments.
-              That alignment makes every headline result traceable to the same 240 edit requests per model.
+              Hardest-10 is the shared subset for both the main model comparison and the feedback experiments. That alignment makes every headline
+              result traceable to the same 240 edit requests per model.
             </p>
           </div>
         </div>
@@ -63,8 +58,8 @@
               <h2>Six qualitatively different kinds of edit.</h2>
             </div>
             <p>
-              The levels adapt the SOLO taxonomy: difficulty grows with how many code regions and artifact
-              relationships must be understood together—not simply with prompt length.
+              The levels adapt the SOLO taxonomy: difficulty grows with how many code regions and artifact relationships must be understood
+              together—not simply with prompt length.
             </p>
           </div>
           <div class="level-list">
@@ -110,15 +105,12 @@
               <h2>The exact Hardest-10 snapshot.</h2>
             </div>
             <p>
-              Overall score is the mean item-level checklist score across all 240 tasks for a model. Render
-              failures count as zero in this observed benchmark view.
+              Overall score is the mean item-level checklist score across all 240 tasks for a model. Render failures count as zero in this observed
+              benchmark view.
             </p>
           </div>
           <div class="figure-card">
-            <img
-              src="./assets/figures/hardest10-main-figure.svg"
-              alt="Hardest-10 overall model score bars and per-level heatmap"
-            />
+            <img src="./assets/figures/hardest10-main-figure.svg" alt="Hardest-10 overall model score bars and per-level heatmap" />
             <div class="figure-meta">
               <span>10 objects × 6 levels × 4 edits · 11 models · Sonnet 5 judge</span>
               <a href="./assets/data/hardest10-model-results.csv">Download CSV ↓</a>
@@ -135,8 +127,8 @@
               <h2>Observed results by model and level.</h2>
             </div>
             <p>
-              “Exec.” is the round-0 Blender render success rate. Small ranking differences should not be
-              interpreted without the verifier audit below.
+              “Exec.” is the round-0 Blender render success rate. Small ranking differences should not be interpreted without the verifier audit
+              below.
             </p>
           </div>
           <div class="table-wrap">
@@ -157,46 +149,144 @@
               </thead>
               <tbody>
                 <tr>
-                  <td>1</td><td>Claude Opus 4.8</td><td class="overall">0.752</td><td>0.800</td><td>0.838</td><td>0.825</td><td>0.602</td><td>0.825</td><td>0.622</td><td>96.7%</td>
+                  <td>1</td>
+                  <td>Claude Opus 4.8</td>
+                  <td class="overall">0.752</td>
+                  <td>0.800</td>
+                  <td>0.838</td>
+                  <td>0.825</td>
+                  <td>0.602</td>
+                  <td>0.825</td>
+                  <td>0.622</td>
+                  <td>96.7%</td>
                 </tr>
                 <tr>
-                  <td>2</td><td>Claude Sonnet 5</td><td class="overall">0.727</td><td>0.800</td><td>0.788</td><td>0.758</td><td>0.596</td><td>0.842</td><td>0.581</td><td>98.8%</td>
+                  <td>2</td>
+                  <td>Claude Sonnet 5</td>
+                  <td class="overall">0.727</td>
+                  <td>0.800</td>
+                  <td>0.788</td>
+                  <td>0.758</td>
+                  <td>0.596</td>
+                  <td>0.842</td>
+                  <td>0.581</td>
+                  <td>98.8%</td>
                 </tr>
                 <tr>
-                  <td>3</td><td>GPT-5.5</td><td class="overall">0.669</td><td>0.800</td><td>0.838</td><td>0.750</td><td>0.683</td><td>0.475</td><td>0.470</td><td>85.0%</td>
+                  <td>3</td>
+                  <td>GPT-5.5</td>
+                  <td class="overall">0.669</td>
+                  <td>0.800</td>
+                  <td>0.838</td>
+                  <td>0.750</td>
+                  <td>0.683</td>
+                  <td>0.475</td>
+                  <td>0.470</td>
+                  <td>85.0%</td>
                 </tr>
                 <tr>
-                  <td>4</td><td>Claude Sonnet 4.6</td><td class="overall">0.642</td><td>0.775</td><td>0.788</td><td>0.742</td><td>0.606</td><td>0.658</td><td>0.282</td><td>89.2%</td>
+                  <td>4</td>
+                  <td>Claude Sonnet 4.6</td>
+                  <td class="overall">0.642</td>
+                  <td>0.775</td>
+                  <td>0.788</td>
+                  <td>0.742</td>
+                  <td>0.606</td>
+                  <td>0.658</td>
+                  <td>0.282</td>
+                  <td>89.2%</td>
                 </tr>
                 <tr>
-                  <td>5</td><td>GPT-5.6 Terra</td><td class="overall">0.601</td><td>0.800</td><td>0.813</td><td>0.775</td><td>0.613</td><td>0.490</td><td>0.114</td><td>77.9%</td>
+                  <td>5</td>
+                  <td>GPT-5.6 Terra</td>
+                  <td class="overall">0.601</td>
+                  <td>0.800</td>
+                  <td>0.813</td>
+                  <td>0.775</td>
+                  <td>0.613</td>
+                  <td>0.490</td>
+                  <td>0.114</td>
+                  <td>77.9%</td>
                 </tr>
                 <tr>
-                  <td>6</td><td>Claude Haiku 4.5</td><td class="overall">0.599</td><td>0.800</td><td>0.713</td><td>0.725</td><td>0.521</td><td>0.540</td><td>0.299</td><td>87.9%</td>
+                  <td>6</td>
+                  <td>Claude Haiku 4.5</td>
+                  <td class="overall">0.599</td>
+                  <td>0.800</td>
+                  <td>0.713</td>
+                  <td>0.725</td>
+                  <td>0.521</td>
+                  <td>0.540</td>
+                  <td>0.299</td>
+                  <td>87.9%</td>
                 </tr>
                 <tr>
-                  <td>7</td><td>GPT-OSS-120B</td><td class="overall">0.594</td><td>0.800</td><td>0.813</td><td>0.758</td><td>0.560</td><td>0.448</td><td>0.184</td><td>88.8%</td>
+                  <td>7</td>
+                  <td>GPT-OSS-120B</td>
+                  <td class="overall">0.594</td>
+                  <td>0.800</td>
+                  <td>0.813</td>
+                  <td>0.758</td>
+                  <td>0.560</td>
+                  <td>0.448</td>
+                  <td>0.184</td>
+                  <td>88.8%</td>
                 </tr>
                 <tr>
-                  <td>8</td><td>GPT-5.6 Sol</td><td class="overall">0.583</td><td>0.775</td><td>0.838</td><td>0.700</td><td>0.538</td><td>0.483</td><td>0.163</td><td>76.7%</td>
+                  <td>8</td>
+                  <td>GPT-5.6 Sol</td>
+                  <td class="overall">0.583</td>
+                  <td>0.775</td>
+                  <td>0.838</td>
+                  <td>0.700</td>
+                  <td>0.538</td>
+                  <td>0.483</td>
+                  <td>0.163</td>
+                  <td>76.7%</td>
                 </tr>
                 <tr>
-                  <td>9</td><td>Gemma 4 31B</td><td class="overall">0.576</td><td>0.800</td><td>0.750</td><td>0.758</td><td>0.527</td><td>0.406</td><td>0.216</td><td>85.8%</td>
+                  <td>9</td>
+                  <td>Gemma 4 31B</td>
+                  <td class="overall">0.576</td>
+                  <td>0.800</td>
+                  <td>0.750</td>
+                  <td>0.758</td>
+                  <td>0.527</td>
+                  <td>0.406</td>
+                  <td>0.216</td>
+                  <td>85.8%</td>
                 </tr>
                 <tr>
-                  <td>10</td><td>GPT-5.6 Luna</td><td class="overall">0.564</td><td>0.750</td><td>0.813</td><td>0.775</td><td>0.625</td><td>0.371</td><td>0.051</td><td>75.4%</td>
+                  <td>10</td>
+                  <td>GPT-5.6 Luna</td>
+                  <td class="overall">0.564</td>
+                  <td>0.750</td>
+                  <td>0.813</td>
+                  <td>0.775</td>
+                  <td>0.625</td>
+                  <td>0.371</td>
+                  <td>0.051</td>
+                  <td>75.4%</td>
                 </tr>
                 <tr>
-                  <td>11</td><td>Qwen3-Coder-Next</td><td class="overall">0.472</td><td>0.800</td><td>0.775</td><td>0.683</td><td>0.363</td><td>0.125</td><td>0.085</td><td>70.4%</td>
+                  <td>11</td>
+                  <td>Qwen3-Coder-Next</td>
+                  <td class="overall">0.472</td>
+                  <td>0.800</td>
+                  <td>0.775</td>
+                  <td>0.683</td>
+                  <td>0.363</td>
+                  <td>0.125</td>
+                  <td>0.085</td>
+                  <td>70.4%</td>
                 </tr>
               </tbody>
             </table>
           </div>
           <p class="table-note">
-            Scores include the 2026-07-20 empty-judge response repair. They have not been corrected using the
-            later verifier audit. Machine-readable versions:
-            <a href="./assets/data/hardest10-model-results.csv">CSV</a> ·
-            <a href="./assets/data/hardest10-model-results.json">JSON</a>.
+            Scores include the 2026-07-20 empty-judge response repair. They have not been corrected using the later verifier audit. Machine-readable
+            versions:
+            <a href="./assets/data/hardest10-model-results.csv">CSV</a> · <a href="./assets/data/hardest10-model-results.json">JSON</a>.
           </p>
         </div>
       </section>
@@ -208,10 +298,9 @@
             <div>
               <h3>The table is an observed ranking, not corrected ground truth.</h3>
               <p>
-                Level 1 is systematically contaminated by false negatives and independent scene normalization;
-                Levels 3–4 ask RGB views to verify metadata and topology; Levels 5–6 are heavily shaped by
-                Blender execution rate, occlusion, and subjective semantics. Treat the table as a measurement
-                of the current end-to-end pipeline, not a clean scalar of editing intelligence.
+                Level 1 is systematically contaminated by false negatives and independent scene normalization; Levels 3–4 ask RGB views to verify
+                metadata and topology; Levels 5–6 are heavily shaped by Blender execution rate, occlusion, and subjective semantics. Treat the table
+                as a measurement of the current end-to-end pipeline, not a clean scalar of editing intelligence.
               </p>
             </div>
           </div>
@@ -219,16 +308,13 @@
             <div class="stack">
               <article class="mini-card">
                 <h3>Strongest observed models</h3>
-                <p>
-                  Opus 4.8 (0.752) and Sonnet 5 (0.727) lead overall, with especially strong L5 scores and
-                  high execution success.
-                </p>
+                <p>Opus 4.8 (0.752) and Sonnet 5 (0.727) lead overall, with especially strong L5 scores and high execution success.</p>
               </article>
               <article class="mini-card">
                 <h3>Execution is a separate capability</h3>
                 <p>
-                  The baseline contains 402 render failures. A model can understand the requested edit but
-                  still lose all task credit because it emitted an incompatible Blender API call.
+                  The baseline contains 402 render failures. A model can understand the requested edit but still lose all task credit because it
+                  emitted an incompatible Blender API call.
                 </p>
               </article>
             </div>
@@ -236,15 +322,15 @@
               <article class="mini-card">
                 <h3>Low levels are not yet “solved”</h3>
                 <p>
-                  The L1 ceiling around 0.8 is largely a verifier artifact: 92 observed zeros completed the
-                  intended code-side change and had no render failure.
+                  The L1 ceiling around 0.8 is largely a verifier artifact: 92 observed zeros completed the intended code-side change and had no
+                  render failure.
                 </p>
               </article>
               <article class="mini-card">
                 <h3>Scene tasks expose a real gap</h3>
                 <p>
-                  Even after separating execution failures, L6 requires object completeness, scale,
-                  physical relationships, visibility, and coherent composition at once.
+                  Even after separating execution failures, L6 requires object completeness, scale, physical relationships, visibility, and coherent
+                  composition at once.
                 </p>
               </article>
             </div>
