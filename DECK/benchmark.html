@@ -30,12 +30,12 @@
           <div class="crumbs"><a href="./index.html">DECK</a> / Benchmark</div>
           <div class="page-hero-grid">
             <div>
-              <div class="kicker">RQ 1 · Model capability</div>
-              <h1>Can an LLM edit a program by reasoning about what it renders?</h1>
+              <div class="kicker">Benchmark setup and results</div>
+              <h1>Hardest-10 benchmark.</h1>
             </div>
             <p class="lead">
-              Hardest-10 is the shared subset for both the main model comparison and the feedback experiments. That alignment makes every headline
-              result traceable to the same 240 edit requests per model.
+              Hardest-10 is used for both the main model comparison and the feedback experiments. It contains 10 source objects, 6 difficulty levels,
+              and 4 edits per level: 240 edit requests per model.
             </p>
           </div>
         </div>
@@ -46,7 +46,7 @@
           <div class="metric"><strong>10</strong><span>reconstructed source objects</span></div>
           <div class="metric"><strong>240</strong><span>unique edit tasks</span></div>
           <div class="metric"><strong>11</strong><span>editing models</span></div>
-          <div class="metric"><strong>2,640</strong><span>model-task evaluations</span></div>
+          <div class="metric"><strong>2,640</strong><span>edited programs scored</span></div>
         </div>
       </section>
 
@@ -105,14 +105,14 @@
               <h2>The exact Hardest-10 snapshot.</h2>
             </div>
             <p>
-              Overall score is the mean item-level checklist score across all 240 tasks for a model. Render failures count as zero in this observed
-              benchmark view.
+              Overall score is the mean checklist score across all 240 tasks for a model. A VLM judge (Sonnet 5) evaluates each checklist item from
+              six rendered views. Render failures count as zero.
             </p>
           </div>
           <div class="figure-card">
             <img src="./assets/figures/hardest10-main-figure.svg" alt="Hardest-10 overall model score bars and per-level heatmap" />
             <div class="figure-meta">
-              <span>10 objects × 6 levels × 4 edits · 11 models · Sonnet 5 judge</span>
+              <span>10 objects × 6 levels × 4 edits · 11 models · VLM judge (Sonnet 5)</span>
               <a href="./assets/data/hardest10-model-results.csv">Download CSV ↓</a>
             </div>
           </div>
@@ -127,8 +127,7 @@
               <h2>Observed results by model and level.</h2>
             </div>
             <p>
-              “Exec.” is the round-0 Blender render success rate. Small ranking differences should not be interpreted without the verifier audit
-              below.
+              “Exec.” is the round-0 Blender render success rate. Overall and level scores are means of the VLM checklist judgments from Sonnet 5.
             </p>
           </div>
           <div class="table-wrap" role="region" aria-label="Hardest-10 model results" tabindex="0">
@@ -284,8 +283,7 @@
             </table>
           </div>
           <p class="table-note">
-            Scores include the 2026-07-20 empty-judge response repair. They have not been corrected using the later verifier audit. Machine-readable
-            versions:
+            Scores include the 2026-07-20 empty-judge response repair. Machine-readable versions:
             <a href="./assets/data/hardest10-model-results.csv">CSV</a> · <a href="./assets/data/hardest10-model-results.json">JSON</a>.
           </p>
         </div>
@@ -293,51 +291,48 @@
 
       <section class="section tint">
         <div class="shell">
-          <div class="warning">
-            <span class="warning-icon">!</span>
-            <div>
-              <h3>The table is an observed ranking, not corrected ground truth.</h3>
-              <p>
-                Level 1 is systematically contaminated by false negatives and independent scene normalization; Levels 3–4 ask RGB views to verify
-                metadata and topology; Levels 5–6 are heavily shaped by Blender execution rate, occlusion, and subjective semantics. Treat the table
-                as a measurement of the current end-to-end pipeline, not a clean scalar of editing intelligence.
-              </p>
-            </div>
+          <div class="note">
+            <h3>Notes from manual verification of the current framework</h3>
+            <p>
+              Manual verification identified several recurring issues: some Level 1 changes are visually small or normalized away; RGB renders cannot
+              directly verify metadata or topology in some Level 3–4 tasks; and later levels are more sensitive to occlusion, execution success, and
+              semantic judgment. We plan to address these issues in the next benchmark version.
+            </p>
           </div>
           <div class="split" style="margin-top: 28px">
             <div class="stack">
               <article class="mini-card">
-                <h3>Strongest observed models</h3>
+                <h3>Highest observed scores</h3>
                 <p>Opus 4.8 (0.752) and Sonnet 5 (0.727) lead overall, with especially strong L5 scores and high execution success.</p>
               </article>
               <article class="mini-card">
-                <h3>Execution is a separate capability</h3>
+                <h3>Render success</h3>
                 <p>
-                  The baseline contains 402 render failures. A model can understand the requested edit but still lose all task credit because it
-                  emitted an incompatible Blender API call.
+                  The baseline contains 402 render failures. These tasks receive zero in the current aggregate score and are reported separately in
+                  the execution column.
                 </p>
               </article>
             </div>
             <div class="stack">
               <article class="mini-card">
-                <h3>Low levels are not yet “solved”</h3>
+                <h3>Level 1 manual check</h3>
                 <p>
-                  The L1 ceiling around 0.8 is largely a verifier artifact: 92 observed zeros completed the intended code-side change and had no
-                  render failure.
+                  Manual inspection found that many observed zeros completed the intended code-side change, but the change was not visible enough in
+                  the six rendered views.
                 </p>
               </article>
               <article class="mini-card">
-                <h3>Scene tasks expose a real gap</h3>
+                <h3>Level 6 tasks</h3>
                 <p>
-                  Even after separating execution failures, L6 requires object completeness, scale, physical relationships, visibility, and coherent
-                  composition at once.
+                  Level 6 combines multiple requirements, including object completeness, relative scale, spatial relationships, visibility, and
+                  overall scene composition.
                 </p>
               </article>
             </div>
           </div>
           <div class="downloads" style="margin-top: 24px">
             <a class="download" href="./assets/reports/deck-hardest10-audit.pdf">PDF · Hardest-10 audit</a>
-            <a class="download" href="./verifier.html">Read verifier reliability analysis →</a>
+            <a class="download" href="./verifier.html">Read verifier experiments →</a>
           </div>
         </div>
       </section>
@@ -345,7 +340,7 @@
 
     <footer class="site-footer">
       <div class="shell footer-wrap">
-        <span>DECK · Artifact-based LLM code editing · Research snapshot, July 2026</span>
+        <span>DECK · Benchmark</span>
         <a href="./feedback.html">Next: feedback loops →</a>
       </div>
     </footer>

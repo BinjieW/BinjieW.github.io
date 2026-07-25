@@ -28,15 +28,15 @@
     <main id="main">
       <section class="page-hero">
         <div class="shell">
-          <div class="crumbs"><a href="./index.html">DECK</a> / Interactive 3D gallery</div>
+          <div class="crumbs"><a href="./index.html">DECK</a> / 3D gallery</div>
           <div class="page-hero-grid">
             <div>
-              <div class="kicker">Compiled artifacts · Drag to inspect</div>
-              <h1>The benchmark edits executable geometry—not screenshots.</h1>
+              <div class="kicker">Interactive source examples</div>
+              <h1>Compiled objects from the source corpus.</h1>
             </div>
             <p class="lead">
-              Every object below is a GLB exported from a compiled Blender scene. Rotate with the mouse, zoom with the wheel, and compare the visual
-              scope of DECK’s reconstructed programs with representative BlenderLLM BlendNet scripts.
+              Every object below is a GLB exported from a compiled Blender scene. Rotate with the mouse or zoom with the wheel. The first group comes
+              from DECK’s reconstructed programs; the second contains representative BlenderLLM BlendNet scripts.
             </p>
           </div>
         </div>
@@ -47,24 +47,24 @@
           <div class="gallery-intro">
             <article class="source-panel deck">
               <div class="kicker">DECK · ReconstructedBPY</div>
-              <h2>Complex programs from real 3D sources</h2>
+              <h2>OpenSCAD reconstructed as Blender Python</h2>
               <p>
-                Open-source OpenSCAD programs are reconstructed as editable bpy code. The gallery spans architecture, detailed ornamental geometry,
-                and mechanical topology.
+                For each open-source OpenSCAD program, the harness renders canonical source views, has a generator agent produce readable bpy code,
+                renders that revision from matched views, and sends both to an independent reviewer agent. Generation and review repeat until the
+                reconstruction is accepted.
               </p>
             </article>
             <article class="source-panel blendnet">
               <div class="kicker">BlenderLLM · BlendNet</div>
-              <h2>Prompt–script pairs as a baseline source</h2>
+              <h2>Existing prompt–script pairs</h2>
               <p>
-                BlendNet provides generated Blender scripts for common objects. These examples are among the more complete items in the first rendered
-                set and illustrate the earlier data regime.
+                BlendNet provides generated Blender scripts for common objects. These examples were selected from the first rendered set and are
+                included as source references.
               </p>
             </article>
           </div>
           <p class="table-note" style="margin-top: 16px">
-            This is an illustrative source comparison, not a quantitative head-to-head: the examples were selected to make dataset scope visible,
-            while the benchmark table uses the fixed Hardest-10 subset.
+            This gallery is illustrative rather than a quantitative comparison. The benchmark results use the fixed Hardest-10 subset.
           </p>
         </div>
       </section>
@@ -74,7 +74,7 @@
           <div class="section-head">
             <div>
               <div class="kicker">DECK source objects</div>
-              <h2>Reconstructed programs with richer structure.</h2>
+              <h2>Examples from ReconstructedBPY.</h2>
             </div>
             <p>
               These objects are representative of the broader ReconstructedBPY source pool. Hardest-10 draws ten difficult programs from that pool for
@@ -188,10 +188,7 @@
               <div class="kicker">BlenderLLM source examples</div>
               <h2>Representative BlendNet objects.</h2>
             </div>
-            <p>
-              BlendNet’s scripts remain useful for diversity and continuity with BlenderLLM, but many objects rely on small arrangements of primitives
-              and offer less structural editing depth.
-            </p>
+            <p>The examples below are compiled directly from representative Blender Python scripts in the BlendNet dataset.</p>
           </div>
           <div class="model-grid">
             <article class="model-card blendnet">
@@ -268,40 +265,11 @@
           </div>
         </div>
       </section>
-
-      <section class="section dark">
-        <div class="shell">
-          <div class="section-head">
-            <div>
-              <div class="kicker">Why source complexity matters</div>
-              <h2>Editing depth depends on what the program exposes.</h2>
-            </div>
-            <p>
-              A benchmark needs scripts that support more than recoloring a primitive: reusable components, meaningful parameters, topology,
-              hierarchy, and spatial relations create room for qualitatively different edits.
-            </p>
-          </div>
-          <div class="card-grid">
-            <article class="card">
-              <h3>Component correspondence</h3>
-              <p>Named program structures should map to visible artifact parts that an edit can target.</p>
-            </article>
-            <article class="card">
-              <h3>Relational changes</h3>
-              <p>Holes, joins, supports, repetition, and assemblies test integration beyond literal replacement.</p>
-            </article>
-            <article class="card">
-              <h3>Preservation pressure</h3>
-              <p>Richer artifacts reveal whether a requested change accidentally destroys unrelated structure.</p>
-            </article>
-          </div>
-        </div>
-      </section>
     </main>
 
     <footer class="site-footer">
       <div class="shell footer-wrap">
-        <span>DECK · Compiled GLB gallery · Mouse and touch interaction enabled</span>
+        <span>DECK · 3D gallery</span>
         <a href="./index.html">Back to overview ↑</a>
       </div>
     </footer>

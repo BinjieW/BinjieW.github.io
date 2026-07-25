@@ -13,8 +13,6 @@
   --coral: #b83a24;
   --coral-soft: #f7c7b8;
   --line: #d9d4ca;
-  --warning: #fff0ca;
-  --warning-ink: #6f4812;
   --shadow: 0 18px 60px rgba(20, 36, 32, 0.09);
   --radius: 18px;
   --max: 1180px;
@@ -597,34 +595,21 @@ model-viewer {
   color: white;
 }
 
-.warning {
-  display: grid;
-  padding: 26px 28px;
-  border: 1px solid #e7c473;
-  border-radius: 18px;
-  background: var(--warning);
-  color: var(--warning-ink);
-  grid-template-columns: auto 1fr;
-  gap: 18px;
+.note {
+  padding: 24px 26px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--white);
 }
 
-.warning-icon {
-  display: grid;
-  width: 36px;
-  height: 36px;
-  place-items: center;
-  border-radius: 50%;
-  background: rgba(111, 72, 18, 0.12);
-  font-weight: 700;
-}
-
-.warning h3 {
-  margin: 1px 0 6px;
+.note h3 {
+  margin: 0 0 6px;
   font-size: 16px;
 }
 
-.warning p {
+.note p {
   margin: 0;
+  color: var(--ink-soft);
 }
 
 .link-cards {
