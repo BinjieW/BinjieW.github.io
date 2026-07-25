@@ -3,14 +3,14 @@
 :root {
   --ink: #15201e;
   --ink-soft: #40504c;
-  --muted: #697570;
+  --muted: #5d6964;
   --paper: #f7f5ef;
   --paper-deep: #ede9df;
   --white: #fffdf8;
   --forest: #173f39;
   --forest-2: #285b53;
   --mint: #c7dbd2;
-  --coral: #ed5b3b;
+  --coral: #b83a24;
   --coral-soft: #f7c7b8;
   --line: #d9d4ca;
   --warning: #fff0ca;
@@ -170,6 +170,7 @@ input {
   display: none;
   width: 42px;
   height: 42px;
+  padding: 0;
   border: 1px solid var(--line);
   border-radius: 12px;
   background: var(--white);
@@ -421,7 +422,11 @@ model-viewer {
 }
 
 .dark .section-head p {
-  color: rgba(255, 255, 255, 0.66);
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.dark .kicker {
+  color: #91c5b4;
 }
 
 .card-grid {
@@ -435,6 +440,7 @@ model-viewer {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--white);
+  color: var(--ink);
   box-shadow: 0 8px 30px rgba(20, 36, 32, 0.035);
 }
 
@@ -471,6 +477,9 @@ model-viewer {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 0;
+  border-radius: 18px;
+  background: var(--forest);
+  color: white;
 }
 
 .workflow-step {
@@ -582,6 +591,10 @@ model-viewer {
 .finding p {
   margin-bottom: 0;
   color: rgba(255, 255, 255, 0.76);
+}
+
+.finding.coral p {
+  color: white;
 }
 
 .warning {
@@ -759,6 +772,11 @@ model-viewer {
   background: var(--white);
 }
 
+.table-wrap:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--forest-2) 55%, white);
+  outline-offset: 3px;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
@@ -774,9 +792,6 @@ td {
 }
 
 th {
-  position: sticky;
-  top: 71px;
-  z-index: 2;
   background: #efede6;
   color: var(--ink-soft);
   font-size: 11px;
@@ -873,7 +888,7 @@ td.overall {
 .loop-node small {
   display: block;
   margin-top: 4px;
-  color: rgba(255, 255, 255, 0.56);
+  color: rgba(255, 255, 255, 0.72);
 }
 
 .gallery-intro {
@@ -1011,6 +1026,7 @@ td.overall {
   border-left: 4px solid var(--coral);
   border-radius: 0 14px 14px 0;
   background: var(--white);
+  color: var(--ink);
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 13px;
 }
@@ -1196,10 +1212,6 @@ td.overall {
   .footer-wrap {
     align-items: flex-start;
     flex-direction: column;
-  }
-
-  th {
-    top: 64px;
   }
 }
 
