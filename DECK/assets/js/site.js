@@ -48,7 +48,7 @@ const tip = (() => {
 
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const SERIES = ['var(--s1)', 'var(--s2)', 'var(--s3)', 'var(--s4)', '#e87ba4', '#008300', '#4a3aa7', '#e34948'];
-const DATA_VERSION = '2026-10-02b'; // bump when data files change so browsers skip stale caches
+const DATA_VERSION = '2026-10-02c'; // bump when data files change so browsers skip stale caches
 const loadJSON = (p) => fetch(`${p}?v=${DATA_VERSION}`).then((r) => r.json());
 
 // Line chart: series [{name, values, color}], x labels, y in percent. Direct end labels + hover crosshair.

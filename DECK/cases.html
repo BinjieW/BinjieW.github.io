@@ -61,9 +61,9 @@ function caseCard(t, pick) {
     el.querySelectorAll('.model-tabs button').forEach((b) => b.classList.toggle('on', b.dataset.m === k));
     const m = MODELS.find((x) => x.key === k), o = t.out[k];
     let h = `<div class="strip-label">${esc(m.name)} ${badge(o.s, o.err)}</div>`;
-    if (o.img) h += `<div class="strip-label">Original</div><img class="strip" loading="lazy" src="${o.orig}" alt="original"><div class="strip-label">Edited</div><img class="strip" loading="lazy" src="${o.img}" alt="edited">`;
-    else if (m.img && (o.s === 'crash' || o.s === 'empty')) h += `<div class="strip-label">Original</div><img class="strip" loading="lazy" src="${t.orig}" alt="original"><p class="small muted">The edited program produced no render.</p>`;
-    else h += `<div class="strip-label">Original</div><img class="strip" loading="lazy" src="${t.orig}" alt="original"><p class="small muted">Renders are shown for five models; verdicts below.</p>`;
+    if (o.img) h += `<div class="strip-label">Before · original</div><img class="strip" loading="lazy" src="${o.orig}" alt="original"><div class="strip-label">After · edited by ${esc(m.name)}</div><img class="strip" loading="lazy" src="${o.img}" alt="edited">`;
+    else if (m.img && (o.s === 'crash' || o.s === 'empty')) h += `<div class="strip-label">Before · original</div><img class="strip" loading="lazy" src="${t.orig}" alt="original"><p class="small muted">The edited program produced no render.</p>`;
+    else h += `<div class="strip-label">Before · original</div><img class="strip" loading="lazy" src="${t.orig}" alt="original"><p class="small muted">Renders are shown for five models; verdicts below.</p>`;
     if (o.v) h += `<ul class="verdicts">${[...o.v].map((b, i) => `<li class="${b === '1' ? '' : 'no'}"><b>${b === '1' ? 'yes' : 'no'}</b> · item ${i + 1}${o.ev ? ': ' + esc(o.ev[i]) : ''}</li>`).join('')}</ul>`;
     el.querySelector('.view').innerHTML = h;
   };

@@ -87,8 +87,8 @@ Promise.all([loadJSON('./assets/data/sources.json'), loadJSON('./assets/data/rec
     const t = byId[h.task_id], f = h.featured_models.find((x) => x.all_pass && x.image) || h.featured_models.find((x) => x.image);
     return `<div class="case"><div class="case-head"><h3>L${t.lv} · ${esc(LVN[t.lv - 1][0])}: ${esc(t.src)}</h3><span class="small muted">${t.npass}/14 models pass</span></div>
       <div class="instr">${esc(t.ins)}</div><ol class="checklist">${t.ck.map(([x, p]) => `<li class="${p ? 'pres' : ''}">${esc(x)}</li>`).join('')}</ol>
-      <div class="strip-label">Original</div><img class="strip" loading="lazy" src="${f.paired_orig_image || t.orig}" alt="">
-      <div class="strip-label">Edited by ${esc(name[f.model])} <span class="badge ${f.all_pass ? 'pass' : 'fail'}">${f.all_pass ? 'Pass' : 'Fail'}</span></div><img class="strip" loading="lazy" src="${f.image}" alt=""></div>`;
+      <div class="strip-label">Before · original</div><img class="strip" loading="lazy" src="${f.paired_orig_image || t.orig}" alt="">
+      <div class="strip-label">After · edited by ${esc(name[f.model])} <span class="badge ${f.all_pass ? 'pass' : 'fail'}">${f.all_pass ? 'Pass' : 'Fail'}</span></div><img class="strip" loading="lazy" src="${f.image}" alt=""></div>`;
   }).join('') + `<p><a href="./cases.html">Browse all 384 tasks →</a></p>`;
 });
 </script>
