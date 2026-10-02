@@ -30,7 +30,7 @@
   </section>
 
   <section class="block">
-    <div class="section-head"><h2>Watch a loop</h2><p>Real trajectories: the render after each round, the verifier's item count, and what the critic told the editor.</p></div>
+    <div class="section-head"><h2>Watch a loop</h2><p>Real trajectories, left to right: the original object, the first edit, then the edit after each round of feedback. Under each render: how many checklist items the verifier passes, and what the critic told the editor next.</p></div>
     <div class="chips" id="traj-pick"></div>
     <div id="traj" style="margin-top:14px"></div>
   </section>
@@ -85,11 +85,11 @@ Promise.all([loadJSON('./assets/data/results.json'), loadJSON('./assets/data/si.
     const ins = t.instruction.split('; ').slice(1).join('; ') || t.instruction;
     document.getElementById('traj').innerHTML = `<div class="case"><div class="case-head"><h3>${esc(t.editor)} editing, ${esc(t.critic)} as critic</h3><span class="tag lv">L${t.level}</span></div>
       <p style="margin:0 0 6px;font-weight:500">${esc(t.caption)}</p><div class="instr">${esc(ins)}</div>
-      <div class="steps">${t.source_key_view ? `<div class="step"><img src="${t.source_key_view.image || t.source_key_view}" alt=""><b>Original</b></div>` : ''}${t.rounds.map((r) => {
+      <div class="steps">${t.source_key_view ? `<div class="step"><img src="${t.source_key_view.image || t.source_key_view}" alt=""><b>Before</b><div class="fb">The original object.</div></div>` : ''}${t.rounds.map((r) => {
         const fb = r.critic && (r.critic.feedback_to_editor || r.critic.feedback);
         const tv = r.terra || {};
         return `<div class="step">${r.key_view ? `<img loading="lazy" src="${r.key_view.image}" alt="">` : '<p class="small muted">no render</p>'}
-          <b>R${r.round}</b> ${tv.items_total ? `<span class="badge ${tv.all_pass ? 'pass' : 'fail'}">${tv.items_passed}/${tv.items_total} items</span>` : ''}
+          <b>${+r.round === 0 ? 'Round 0 · first edit' : 'Round ' + r.round}</b> ${tv.items_total ? `<span class="badge ${tv.all_pass ? 'pass' : 'fail'}">${tv.items_passed}/${tv.items_total} items</span>` : ''}
           ${fb ? `<div class="fb">Critic: “${esc(fb.length > 320 ? fb.slice(0, 320) + '…' : fb)}”</div>` : (r.critic && r.critic.status === 'satisfied' ? '<div class="fb">Critic: satisfied, stop.</div>' : '')}</div>`;
       }).join('')}</div></div>`;
   };

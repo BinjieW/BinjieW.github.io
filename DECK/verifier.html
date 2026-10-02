@@ -60,8 +60,8 @@ Promise.all([loadJSON('./assets/data/results.json'), loadJSON('./assets/data/ver
       const kv = (e.images.key_views || [])[0];
       return `<div class="case"><div class="case-head"><h3>${esc(e.checklist_item)}</h3><span class="tag lv">L${e.level}</span><span class="small muted">edit by ${esc(e.editor)}</span></div>
         <p class="small" style="margin:4px 0 10px">Verifier said <span class="badge ${e.verifier_verdict === 'yes' ? 'pass' : 'fail'}">${esc(e.verifier_verdict)}</span> · correct answer <span class="badge ${e.correct_label === 'yes' ? 'pass' : 'fail'}">${esc(e.correct_label)}</span></p>
-        ${kv ? `<div class="grid-2"><div><div class="strip-label">Original · ${esc(kv.view)}</div><img class="strip" style="max-height:300px;object-fit:contain" loading="lazy" src="${kv.original}" alt=""></div><div><div class="strip-label">Edited · ${esc(kv.view)}</div><img class="strip" style="max-height:300px;object-fit:contain" loading="lazy" src="${kv.edited}" alt=""></div></div>` : ''}
-        <div class="strip-label">All six views: original, then edited</div><img class="strip" loading="lazy" src="${e.images.original_sixview}" alt=""><img class="strip" style="margin-top:4px" loading="lazy" src="${e.images.edited_sixview}" alt="">
+        ${kv ? `<div class="grid-2"><div><div class="strip-label">Before · ${esc(kv.view)} view</div><img class="strip" style="max-height:300px;object-fit:contain" loading="lazy" src="${kv.original}" alt=""></div><div><div class="strip-label">After · ${esc(kv.view)} view</div><img class="strip" style="max-height:300px;object-fit:contain" loading="lazy" src="${kv.edited}" alt=""></div></div>` : ''}
+        <div class="strip-label">All six views · before (top), after (bottom)</div><img class="strip" loading="lazy" src="${e.images.original_sixview}" alt=""><img class="strip" style="margin-top:4px" loading="lazy" src="${e.images.edited_sixview}" alt="">
         <p class="small" style="margin:10px 0 0"><b>Verifier's evidence:</b> ${esc(e.verifier_evidence)}</p>
         <p class="small" style="margin:6px 0 0"><b>What went wrong:</b> ${esc(e.explanation)}</p></div>`;
     }).join('');
