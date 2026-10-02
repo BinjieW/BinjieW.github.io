@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DECK · Results</title>
+  <link rel="stylesheet" href="./assets/css/site.css" />
+  <script src="./assets/js/site.js"></script>
+</head>
+<body>
+<main class="shell">
+  <div class="page-head">
+    <div class="eyebrow">Results</div>
+    <h1>How well do models <em>edit 3D artifacts?</em></h1>
+    <p class="lede">Fourteen models edit the same programs across six difficulty levels. Each edit is executed, rendered from six views, and must pass every checklist item.</p>
+  </div>
+
+  <div class="stats" id="stats"></div>
+
+  <section class="block">
+    <div class="section-head">
+      <h2>All-pass rate by model and level</h2>
+      <p>Single-shot editing, 64 tasks per level. Even the best model solves fewer than two thirds of the tasks, and every model loses most of its accuracy once an edit goes beyond a single parameter.</p>
+    </div>
+    <div id="heat"></div>
+  </section>
+
+  <section class="block">
+    <div class="grid-2">
+      <div>
+        <div class="chart-title">The L1 → L2 cliff, and the open–closed gap</div>
+        <div class="chart-sub">Mean all-pass rate per level. Open-weight models reach near zero from L4 on.</div>
+        <div class="chart" id="gap"></div>
+      </div>
+      <div>
+        <div class="chart-title">Strongest models per family</div>
+        <div class="chart-sub">All-pass rate per level for the best model of each group.</div>
+        <div class="chart" id="top"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="section-head">
+      <h2>Why edits fail</h2>
+      <p>Outcome of every edit (14 models × 64 tasks per level). Most failures come from <b>not making the requested change</b>; breaking unrelated parts alone is rare. Programs that crash or render nothing grow with difficulty.</p>
+    </div>
+    <div class="chart" id="fail"></div>
+    <p class="note" style="margin-top:16px">Among rendered edits that fail, 97.7% miss at least one edit item and only 2.3% fail solely on the preservation item. The most common crashes are syntax errors (34%) and undefined attributes or names (30%).</p>
+  </section>
+
+  <section class="block">
+    <div class="section-head">
+      <h2>Executability</h2>
+      <p>Share of edited programs that execute and render (%). Some models crash on easy edits because they break output formatting, not because the edit is hard.</p>
+    </div>
+    <div id="exec"></div>
+  </section>
+
+  <p><a class="button" href="./cases.html">Browse the edits behind these numbers →</a></p>
+</main>
+<script>
+loadJSON('./assets/data/results.json').then((d) => {
+  const L = ['L1', 'L2', 'L3', 'L4', 'L5', 'L6'];
+  const closed = d.models.filter((m) => !m.open), open = d.models.filter((m) => m.open);
+  const mean = (ms, i) => ms.reduce((a, m) => a + m.allpass[i], 0) / ms.length;
+  const all = L.map((_, i) => mean(d.models, i));
+  const execAll = d.models.reduce((a, m) => a + m.exec_avg, 0) / d.models.length;
+  document.getElementById('stats').innerHTML = [
+    ['65.1%', 'best all-pass (GPT-6-astra)'],
+    [`${all[0].toFixed(0)}% → ${all[1].toFixed(0)}%`, 'mean all-pass, L1 → L2'],
+    [`${(closed.reduce((a, m) => a + m.avg, 0) / closed.length).toFixed(0)} vs ${(open.reduce((a, m) => a + m.avg, 0) / open.length).toFixed(0)}`, 'closed vs open-weight (avg %)'],
+    [`${execAll.toFixed(0)}%`, 'edits that execute and render'],
+  ].map(([b, s]) => `<div class="stat"><b>${b}</b><span>${s}</span></div>`).join('');
+  const rows = (key, extra) => [{ group: 'Closed-source' }, ...closed.map((m) => ({ name: m.name, values: m[key], extra: extra(m) })),
+    { group: 'Open-weight' }, ...open.map((m) => ({ name: m.name, values: m[key], extra: extra(m) }))];
+  heatTable(document.getElementById('heat'), { cols: L, rows: rows('allpass', (m) => [m.avg.toFixed(1)]), extraCols: ['Avg.'] });
+  heatTable(document.getElementById('exec'), { cols: L, rows: rows('exec', (m) => [m.exec_avg.toFixed(1)]), extraCols: ['All'], lo: 30 });
+  lineChart(document.getElementById('gap'), { xLabels: L, series: [
+    { name: 'Closed-source', values: L.map((_, i) => mean(closed, i)) },
+    { name: 'Open-weight', values: L.map((_, i) => mean(open, i)) }] });
+  const pick = ['GPT-6-astra', 'Claude Sonnet 5', 'Gemma 4 31B', 'Qwen3-VL-235B-A22B'];
+  lineChart(document.getElementById('top'), { xLabels: L, series: pick.map((n) => ({ name: n, values: d.models.find((m) => m.name === n).allpass })) });
+  stackedBars(document.getElementById('fail'), {
+    parts: [
+      { key: 'pass', label: 'Pass', color: 'var(--s1)' },
+      { key: 'edit_missed', label: 'Edit not made', color: 'var(--s2)' },
+      { key: 'both', label: 'Edit missed + parts broken', color: 'var(--s3)' },
+      { key: 'preservation_only', label: 'Unrelated parts broken', color: 'var(--s4)' },
+      { key: 'render_fail', label: 'Crash / nothing rendered', color: '#e87ba4' }],
+    rows: d.failure_by_level.map((f, i) => ({ label: L[i], values: f })) });
+});
+</script>
+</body>
+</html>

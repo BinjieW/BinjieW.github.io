@@ -1,214 +1,74 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="DECK experiments with CLIP-based visual signals and planned agent-generated reference renders." />
-    <title>Verifier experiments · DECK</title>
-    <link rel="stylesheet" href="./assets/css/site.css" />
-  </head>
-  <body>
-    <a class="skip-link" href="#main">Skip to content</a>
-    <header class="site-header">
-      <div class="shell nav-wrap">
-        <a class="brand" href="./index.html" aria-label="DECK home"> <span class="brand-mark">D</span><span>DECK</span> </a>
-        <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">Menu</button>
-        <nav class="site-nav" aria-label="Primary navigation">
-          <a href="./index.html" data-page="index.html">Overview</a>
-          <a href="./benchmark.html" data-page="benchmark.html">Benchmark</a>
-          <a href="./feedback.html" data-page="feedback.html">Feedback loops</a>
-          <a href="./verifier.html" data-page="verifier.html">Verifier</a>
-          <a href="./gallery.html" data-page="gallery.html">3D gallery</a>
-          <span class="nav-status">Research in progress</span>
-        </nav>
-      </div>
-    </header>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DECK · Verifier</title>
+  <link rel="stylesheet" href="./assets/css/site.css" />
+  <script src="./assets/js/site.js"></script>
+</head>
+<body>
+<main class="shell">
+  <div class="page-head">
+    <div class="eyebrow">Verifier</div>
+    <h1>Can a VLM judge <em>a 3D edit?</em></h1>
+    <p class="lede">The verifier answers one checklist item at a time from twelve labelled renders: six views of the original and six of the edit. It never sees the code. We compare 14 verifier models with human labels on 264 checklist items.</p>
+  </div>
 
-    <main id="main">
-      <section class="page-hero">
-        <div class="shell">
-          <div class="crumbs"><a href="./index.html">DECK</a> / Verifier experiments</div>
-          <div class="page-hero-grid">
-            <div>
-              <div class="kicker">Verifier experiments</div>
-              <h1>Additional visual signals for artifact evaluation.</h1>
-            </div>
-            <p class="lead">
-              We tested two CLIP-based scores on existing benchmark renders. Their separation is limited, so they are not currently useful as
-              standalone verifiers. The next experiment will use an agent to create task-specific reference renders.
-            </p>
-          </div>
-        </div>
-      </section>
+  <div class="stats">
+    <div class="stat"><b>91.7%</b><span>best agreement with human labels (GPT-6-astra)</span></div>
+    <div class="stat"><b>87.1%</b><span>GPT-5.6-sol, single call, as used to score the benchmark</span></div>
+    <div class="stat"><b>L4</b><span>hardest level to verify for most models</span></div>
+    <div class="stat"><b>76 : 2</b><span>false passes vs false fails of the weakest verifier</span></div>
+  </div>
 
-      <section class="section tight">
-        <div class="shell metric-grid">
-          <div class="metric"><strong>3,000</strong><span>checklist items analyzed</span></div>
-          <div class="metric"><strong>6</strong><span>edit levels</span></div>
-          <div class="metric"><strong>0.621</strong><span>contrastive CLIP macro AUC</span></div>
-          <div class="metric"><strong>0.636</strong><span>directional CLIP macro AUC</span></div>
-        </div>
-      </section>
+  <section class="block">
+    <div class="section-head"><h2>Accuracy against human labels</h2><p>264 items, 44 per level; majority of three calls per item. Weak verifiers err by accepting failed edits; strong ones by rejecting good ones.</p></div>
+    <div id="acc"></div>
+  </section>
 
-      <section class="section dark">
-        <div class="shell">
-          <div class="section-head">
-            <div>
-              <div class="kicker">CLIP experiments · 3,000 items</div>
-              <h2>Two image-based scores.</h2>
-            </div>
-            <p>
-              We compare two six-view CLIP scores against existing Sonnet 5 YES/NO checklist labels. Both produce only limited separation between the
-              two groups.
-            </p>
-          </div>
-          <div class="split">
-            <div>
-              <div class="formula">Contrastive Δ = meanᵥ[(sim(Mᵥ, positive) − sim(Mᵥ, negative)) − (sim(Oᵥ, positive) − sim(Oᵥ, negative))]</div>
-              <p style="margin-top: 14px; color: rgba(255, 255, 255, 0.67)">
-                Asks whether each modified view moved toward the satisfied description relative to the original.
-              </p>
-            </div>
-            <div>
-              <div class="formula">Directional CLIP = meanᵥ cosine(E(Mᵥ) − E(Oᵥ), E(target) − E(source))</div>
-              <p style="margin-top: 14px; color: rgba(255, 255, 255, 0.67)">
-                Aligns the visual direction of change with the textual direction of the requested edit.
-              </p>
-            </div>
-          </div>
-          <div class="finding-grid">
-            <article class="finding" style="background: #285b53">
-              <strong>0.621 AUC</strong>
-              <p>Contrastive CLIP macro AUC across L1–L6. The clearest separation appears on global color and material changes.</p>
-            </article>
-            <article class="finding coral">
-              <strong>0.636 AUC</strong>
-              <p>Directional CLIP macro AUC. The overall separation remains limited.</p>
-            </article>
-          </div>
-        </div>
-      </section>
+  <section class="block">
+    <div class="section-head"><h2>Why not standard 3D metrics?</h2></div>
+    <div class="grid-3">
+      <div class="card"><h3>Many valid outputs</h3><p>An instruction like “make the treads overlap like leaves” has countless correct realizations. Distance to one reference output punishes all but one of them.</p></div>
+      <div class="card"><h3>Edits are small and local</h3><p>Image–text similarity barely moves when a slot is widened or a hole is added, and it cannot count parts or check how they connect.</p></div>
+      <div class="card"><h3>Preservation matters</h3><p>A correct edit that also wrecks the rest of the object should fail. Global scores cannot separate the two; a preservation item can.</p></div>
+    </div>
+  </section>
 
-      <section class="section">
-        <div class="shell">
-          <div class="section-head">
-            <div>
-              <div class="kicker">Score distributions</div>
-              <h2>Score distributions by level.</h2>
-            </div>
-            <p>YES and NO are the existing checklist labels from the VLM judge (Sonnet 5).</p>
-          </div>
-          <div class="split">
-            <div class="figure-card">
-              <img src="./assets/figures/clip/contrastive-by-level.png" alt="Contrastive CLIP score distributions for YES and NO labels by level" />
-              <div class="figure-meta"><span>Contrastive CLIP Δ</span><span>macro AUC 0.621</span></div>
-            </div>
-            <div class="figure-card">
-              <img src="./assets/figures/clip/directional-by-level.png" alt="Directional CLIP score distributions for YES and NO labels by level" />
-              <div class="figure-meta"><span>Directional CLIP</span><span>macro AUC 0.636</span></div>
-            </div>
-          </div>
-        </div>
-      </section>
+  <section class="block">
+    <div class="section-head"><h2>How verifiers go wrong</h2><p>Seven recurring error types from auditing verifier mistakes, each with a real example. The share is the fraction of audited GPT-5.6-sol errors in that category.</p></div>
+    <div class="chips" id="cat-chips"></div>
+    <div id="cat-view"></div>
+  </section>
+</main>
+<script>
+Promise.all([loadJSON('./assets/data/results.json'), loadJSON('./assets/data/verifier.json')]).then(([r, v]) => {
+  const L = ['L1', 'L2', 'L3', 'L4', 'L5', 'L6'];
+  const closed = r.verifier.filter((x) => !x.open), open = r.verifier.filter((x) => x.open);
+  const row = (x) => ({ name: x.name, values: x.levels, extra: [x.all.toFixed(1), `${x.fp} / ${x.fn}`] });
+  heatTable(document.getElementById('acc'), { cols: L, extraCols: ['All', 'False pass / fail'], lo: 50,
+    rows: [{ group: 'Closed-source' }, ...closed.map(row), { group: 'Open-weight' }, ...open.map(row)] });
 
-      <section class="section tint">
-        <div class="shell">
-          <div class="section-head">
-            <div>
-              <div class="kicker">Case studies</div>
-              <h2>Example score behavior.</h2>
-            </div>
-            <p>The examples show cases where each CLIP score agrees or disagrees with the existing checklist label.</p>
-          </div>
-          <div class="case-grid">
-            <article class="case">
-              <img src="./assets/figures/cases/contrastive_effective.png" alt="Gold-to-red recoloring case study" />
-              <div class="case-body">
-                <h3>Contrastive agreement · global recoloring</h3>
-                <p>
-                  Gold → red is visible in every view. Positive and negative captions differ primarily in color, producing a 98.8th-percentile YES
-                  score.
-                </p>
-              </div>
-            </article>
-            <article class="case">
-              <img src="./assets/figures/cases/contrastive_ineffective.png" alt="Small door in lighthouse scene case study" />
-              <div class="case-body">
-                <h3>Contrastive disagreement · localized door</h3>
-                <p>
-                  The wooden door occupies a small region inside a large scene rebuild. Whole-image semantics dominate, producing a high-confidence NO
-                  score.
-                </p>
-              </div>
-            </article>
-            <article class="case">
-              <img src="./assets/figures/cases/directional_effective.png" alt="Yellow-to-blue cam disk case study" />
-              <div class="case-body">
-                <h3>Directional agreement · color edit</h3>
-                <p>Object and framing remain stable while yellow becomes blue. All six image-difference vectors align with the text change.</p>
-              </div>
-            </article>
-            <article class="case">
-              <img src="./assets/figures/cases/directional_ineffective.png" alt="Organic extrusion preservation failure case study" />
-              <div class="case-body">
-                <h3>Directional disagreement · preservation constraint</h3>
-                <p>
-                  The artifact moves strongly toward “organic,” but loses its extrusion identity. Directional CLIP rewards change without enforcing
-                  the invariant.
-                </p>
-              </div>
-            </article>
-          </div>
-          <div class="downloads" style="margin-top: 24px">
-            <a class="download" href="./assets/reports/hard10-clip-verifier.pdf">PDF · CLIP sidecar report</a>
-          </div>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="shell">
-          <div class="section-head">
-            <div>
-              <div class="kicker">Next experiment</div>
-              <h2>Agent-generated reference renders.</h2>
-            </div>
-            <p>
-              The next experiment will generate a reference implementation for each edit request, render it from matched views, and use CV similarity
-              metrics to compare the model output with those reference renders.
-            </p>
-          </div>
-          <div class="card-grid">
-            <article class="card">
-              <span class="number">01</span>
-              <h3>Generate a reference edit</h3>
-              <p>An agent receives the source bpy program and edit request, then produces a reference implementation for that task.</p>
-            </article>
-            <article class="card">
-              <span class="number">02</span>
-              <h3>Render matched views</h3>
-              <p>
-                The source, model output, and reference implementation are rendered with shared cameras, including task-specific views when needed.
-              </p>
-            </article>
-            <article class="card">
-              <span class="number">03</span>
-              <h3>Compute CV similarity</h3>
-              <p>
-                CV metrics compare the model renders with the matched reference renders. Reference-generation success is recorded separately from the
-                similarity score.
-              </p>
-            </article>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <footer class="site-footer">
-      <div class="shell footer-wrap">
-        <span>DECK · Verifier experiments</span>
-        <a href="./gallery.html">Next: 3D gallery →</a>
-      </div>
-    </footer>
-    <script src="./assets/js/site.js"></script>
-  </body>
+  const cats = [...v.taxonomy.categories, v.supplementary_category];
+  const chips = document.getElementById('cat-chips');
+  chips.innerHTML = cats.map((c, i) => `<button class="chip" data-i="${i}">${esc(c.name)}${c.share_sol_medium_pct ? ` · ${c.share_sol_medium_pct}%` : ''}</button>`).join('');
+  const show = (i) => {
+    chips.querySelectorAll('.chip').forEach((b) => b.classList.toggle('on', +b.dataset.i === i));
+    const c = cats[i];
+    document.getElementById('cat-view').innerHTML = `<p class="note" style="margin-top:14px">${esc(c.definition)}</p>` + c.examples.map((e) => {
+      const kv = (e.images.key_views || [])[0];
+      return `<div class="case"><div class="case-head"><h3>${esc(e.checklist_item)}</h3><span class="tag lv">L${e.level}</span><span class="small muted">edit by ${esc(e.editor)}</span></div>
+        <p class="small" style="margin:4px 0 10px">Verifier said <span class="badge ${e.verifier_verdict === 'yes' ? 'pass' : 'fail'}">${esc(e.verifier_verdict)}</span> · correct answer <span class="badge ${e.correct_label === 'yes' ? 'pass' : 'fail'}">${esc(e.correct_label)}</span></p>
+        ${kv ? `<div class="grid-2"><div><div class="strip-label">Original · ${esc(kv.view)}</div><img class="strip" style="max-height:300px;object-fit:contain" loading="lazy" src="${kv.original}" alt=""></div><div><div class="strip-label">Edited · ${esc(kv.view)}</div><img class="strip" style="max-height:300px;object-fit:contain" loading="lazy" src="${kv.edited}" alt=""></div></div>` : ''}
+        <div class="strip-label">All six views: original, then edited</div><img class="strip" loading="lazy" src="${e.images.original_sixview}" alt=""><img class="strip" style="margin-top:4px" loading="lazy" src="${e.images.edited_sixview}" alt="">
+        <p class="small" style="margin:10px 0 0"><b>Verifier's evidence:</b> ${esc(e.verifier_evidence)}</p>
+        <p class="small" style="margin:6px 0 0"><b>What went wrong:</b> ${esc(e.explanation)}</p></div>`;
+    }).join('');
+  };
+  chips.querySelectorAll('.chip').forEach((b) => (b.onclick = () => show(+b.dataset.i)));
+  show(0);
+});
+</script>
+</body>
 </html>

@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DECK · Case explorer</title>
+  <link rel="stylesheet" href="./assets/css/site.css" />
+  <script src="./assets/js/site.js"></script>
+</head>
+<body>
+<main class="shell">
+  <div class="page-head">
+    <div class="eyebrow">Case explorer</div>
+    <h1>Every edit, <em>original next to result.</em></h1>
+    <p class="lede">All 384 tasks with the verdicts of 14 models. Each strip shows the six views (front, back, left, right, top, bottom); originals and edits share one camera frame, so size changes are visible.</p>
+  </div>
+
+  <section class="block" id="highlights">
+    <div class="section-head">
+      <h2>Highlights</h2>
+      <p>Hand-picked cases that show what each level asks for and how models fail.</p>
+    </div>
+    <div class="chips" id="hl-groups"></div>
+    <div id="hl-list"></div>
+  </section>
+
+  <section class="block" id="explore">
+    <div class="section-head">
+      <h2>Browse all tasks</h2>
+      <p>Pick a model to see its edit and the verifier's verdict on every checklist item. Renders are shown for five models; verdicts are shown for all fourteen.</p>
+    </div>
+    <div class="filters">
+      <div class="chips" id="lv-chips"></div>
+      <label>Category <select id="f-cat"><option value="">All</option><option>architecture</option><option>furniture</option><option>manufacture</option><option>3DCodeBench</option></select></label>
+      <label>Solved by <select id="f-solved"><option value="">any</option><option value="0">no model</option><option value="1-4">1–4 models</option><option value="5-9">5–9 models</option><option value="10-14">10+ models</option></select></label>
+      <label>Object <input id="f-q" placeholder="search…" size="12" /></label>
+      <span class="small muted" id="f-count"></span>
+    </div>
+    <div id="case-list"></div>
+    <button class="button secondary more-btn" id="more">Show more</button>
+  </section>
+</main>
+<script>
+const LV = { 1: 'Parameter', 2: 'Component', 3: 'Multi-component', 4: 'Structural', 5: 'Semantic', 6: 'Scene' };
+const ST = { pass: ['pass', 'Pass'], edit: ['fail', 'Edit not made'], pres: ['fail', 'Unrelated parts broken'], both: ['fail', 'Edit missed + parts broken'], crash: ['err', 'Crash'], empty: ['err', 'Nothing rendered'], other: ['fail', 'Fail'] };
+const badge = (s, err) => { const [c, t] = ST[s] || ST.other; return `<span class="badge ${c}">${t}${err ? ' · ' + esc(err) : ''}</span>`; };
+const dotCls = (s) => (s === 'pass' ? 'pass' : (s === 'crash' || s === 'empty') ? 'err' : 'fail');
+let MODELS = [];
+
+function caseCard(t, pick) {
+  const imgModels = MODELS.filter((m) => m.img);
+  const first = pick || (imgModels.find((m) => t.out[m.key]?.img) || imgModels[0]).key;
+  const el = document.createElement('div');
+  el.className = 'case';
+  el.innerHTML = `<div class="case-head"><h3>${esc(t.src)}</h3><span class="tag lv">L${t.lv} · ${LV[t.lv]}</span><span class="tag">${esc(t.cat)}</span><span class="small muted">${t.npass}/14 models pass</span></div>
+    <div class="instr">${esc(t.ins)}</div>
+    <ol class="checklist">${t.ck.map(([x, p]) => `<li class="${p ? 'pres' : ''}">${esc(x)}${p ? ' <span class="tag">preservation</span>' : ''}</li>`).join('')}</ol>
+    <div class="small muted" style="margin-top:10px">Dot = verdict (green pass, red fail, amber crash). Models in bold have renders.</div><div class="model-tabs">${MODELS.map((m) => { const o = t.out[m.key]; return `<button data-m="${m.key}" class="${m.img ? 'has-img' : ''}"><span class="dot ${o ? dotCls(o.s) : 'na'}"></span>${esc(m.name)}</button>`; }).join('')}</div>
+    <div class="view"></div>`;
+  const show = (k) => {
+    el.querySelectorAll('.model-tabs button').forEach((b) => b.classList.toggle('on', b.dataset.m === k));
+    const m = MODELS.find((x) => x.key === k), o = t.out[k];
+    let h = `<div class="strip-label">${esc(m.name)} ${badge(o.s, o.err)}</div>`;
+    if (o.img) h += `<div class="strip-label">Original</div><img class="strip" loading="lazy" src="${o.orig}" alt="original"><div class="strip-label">Edited</div><img class="strip" loading="lazy" src="${o.img}" alt="edited">`;
+    else if (m.img && (o.s === 'crash' || o.s === 'empty')) h += `<div class="strip-label">Original</div><img class="strip" loading="lazy" src="${t.orig}" alt="original"><p class="small muted">The edited program produced no render.</p>`;
+    else h += `<div class="strip-label">Original</div><img class="strip" loading="lazy" src="${t.orig}" alt="original"><p class="small muted">Renders are shown for five models; verdicts below.</p>`;
+    if (o.v) h += `<ul class="verdicts">${[...o.v].map((b, i) => `<li class="${b === '1' ? '' : 'no'}"><b>${b === '1' ? 'yes' : 'no'}</b> · item ${i + 1}${o.ev ? ': ' + esc(o.ev[i]) : ''}</li>`).join('')}</ul>`;
+    el.querySelector('.view').innerHTML = h;
+  };
+  el.querySelectorAll('.model-tabs button').forEach((b) => (b.onclick = () => show(b.dataset.m)));
+  show(first);
+  return el;
+}
+
+// ---------- highlights ----------
+Promise.all([loadJSON('./assets/data/highlights.json'), ...[1, 2, 3, 4, 5, 6].map((l) => loadJSON(`./assets/data/cases_L${l}.json`))]).then(([hl, ...lvls]) => {
+  MODELS = hl.models;
+  const all = lvls.flatMap((x) => x.cases), byId = Object.fromEntries(all.map((t) => [t.id, t]));
+  const GN = { level_examples: 'One task per level', l1_l2_cliff: 'The L1 → L2 cliff', edit_missed: 'Edit not made', preservation_broken: 'Unrelated parts broken', render_failure: 'Crashes', all_fail: 'No model succeeds', open_beats_strong: 'Open models win' };
+  const groups = Object.keys(hl.groups);
+  const chips = document.getElementById('hl-groups');
+  const showGroup = (g) => {
+    chips.querySelectorAll('.chip').forEach((c) => c.classList.toggle('on', c.dataset.g === g));
+    const list = document.getElementById('hl-list'); list.innerHTML = `<p class="note" style="margin-top:14px">${esc(hl.groups[g])}</p>`;
+    hl.highlights.filter((h) => h.group === g).forEach((h) => {
+      const t = byId[h.task_id]; if (!t) return;
+      const card = caseCard(t, h.featured_models.find((f) => f.image)?.model);
+      card.insertAdjacentHTML('afterbegin', `<p style="margin:0 0 10px;font-weight:500">${esc(h.caption)}</p>`);
+      list.append(card);
+    });
+  };
+  chips.innerHTML = groups.map((g) => `<button class="chip" data-g="${g}">${GN[g] || g}</button>`).join('');
+  chips.querySelectorAll('.chip').forEach((c) => (c.onclick = () => showGroup(c.dataset.g)));
+  showGroup(groups[0]);
+
+  // ---------- explorer ----------
+  let lv = new Set([1, 2, 3, 4, 5, 6]), shown = 0, filtered = [];
+  const lvc = document.getElementById('lv-chips');
+  lvc.innerHTML = [1, 2, 3, 4, 5, 6].map((l) => `<button class="chip on" data-l="${l}">L${l}</button>`).join('');
+  lvc.querySelectorAll('.chip').forEach((c) => (c.onclick = () => { const l = +c.dataset.l; lv.has(l) ? lv.delete(l) : lv.add(l); c.classList.toggle('on'); apply(); }));
+  const list = document.getElementById('case-list'), more = document.getElementById('more');
+  const page = () => { filtered.slice(shown, shown + 12).forEach((t) => list.append(caseCard(t))); shown += 12; more.style.display = shown < filtered.length ? '' : 'none'; };
+  function apply() {
+    const cat = document.getElementById('f-cat').value, q = document.getElementById('f-q').value.toLowerCase(), sv = document.getElementById('f-solved').value;
+    const [a, b] = sv ? (sv.includes('-') ? sv.split('-').map(Number) : [0, 0]) : [0, 14];
+    filtered = all.filter((t) => lv.has(t.lv) && (!cat || t.cat === cat) && (!q || t.src.toLowerCase().includes(q)) && t.npass >= a && t.npass <= b);
+    document.getElementById('f-count').textContent = `${filtered.length} tasks`;
+    list.innerHTML = ''; shown = 0; page();
+  }
+  ['f-cat', 'f-solved'].forEach((id) => (document.getElementById(id).onchange = apply));
+  document.getElementById('f-q').oninput = apply;
+  more.onclick = page;
+  apply();
+});
+</script>
+</body>
+</html>

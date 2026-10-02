@@ -1,257 +1,91 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="DECK is a benchmark for evaluating and improving LLMs that edit executable artifact-generating code." />
-    <title>DECK — Progress update</title>
-    <link rel="stylesheet" href="./assets/css/site.css" />
-    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.3.1/model-viewer.min.js"></script>
-  </head>
-  <body>
-    <a class="skip-link" href="#main">Skip to content</a>
-    <header class="site-header">
-      <div class="shell nav-wrap">
-        <a class="brand" href="./index.html" aria-label="DECK home">
-          <span class="brand-mark">D</span>
-          <span>DECK</span>
-        </a>
-        <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">Menu</button>
-        <nav class="site-nav" aria-label="Primary navigation">
-          <a href="./index.html" data-page="index.html">Overview</a>
-          <a href="./benchmark.html" data-page="benchmark.html">Benchmark</a>
-          <a href="./feedback.html" data-page="feedback.html">Feedback loops</a>
-          <a href="./verifier.html" data-page="verifier.html">Verifier</a>
-          <a href="./gallery.html" data-page="gallery.html">3D gallery</a>
-          <span class="nav-status">Research in progress</span>
-        </nav>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="DECK: a benchmark of editing realistic Blender Python programs, judged by the 3D artifacts they produce." />
+  <title>DECK · Editing code through the 3D artifacts it produces</title>
+  <link rel="stylesheet" href="./assets/css/site.css" />
+  <script src="./assets/js/site.js"></script>
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.3.1/model-viewer.min.js"></script>
+</head>
+<body>
+<main>
+  <section class="hero">
+    <div class="shell hero-grid">
+      <div>
+        <div class="eyebrow">DECK-Bench · Blender Python</div>
+        <h1>Can a coding model <em>edit a realistic 3D artifact?</em></h1>
+        <p class="lede">DECK gives a model a readable, end-to-end Blender program and a natural-language edit. The edited program is executed, rendered from six views, and checked against an instruction-specific checklist. Edits range from changing one parameter to redesigning the object and composing a scene.</p>
+        <div class="button-row">
+          <a class="button" href="./results.html">See the results</a>
+          <a class="button secondary" href="./cases.html">Browse edits</a>
+        </div>
       </div>
-    </header>
-
-    <main id="main">
-      <section class="hero">
-        <div class="shell hero-grid">
-          <div>
-            <div class="eyebrow">Progress update · July 2026</div>
-            <h1>Editing Blender Python through <em>compiled 3D artifacts.</em></h1>
-            <p class="hero-copy">
-              DECK studies whether language models can modify executable programs whose correctness lives in the artifact they produce. Our first
-              domain is Blender Python and editable 3D geometry.
-            </p>
-            <div class="button-row">
-              <a class="button" href="./benchmark.html">See the benchmark</a>
-              <a class="button secondary" href="./gallery.html">Explore compiled objects</a>
-            </div>
-          </div>
-          <div class="model-stage">
-            <div class="stage-label">
-              <strong>Medieval fortress generator</strong>
-              <span>OpenSCAD → reconstructed bpy · compiled GLB</span>
-            </div>
-            <model-viewer
-              src="./assets/models/deck-fortress.glb"
-              poster="./assets/posters/deck-fortress.png"
-              alt="Interactive 3D model of a medieval fortress reconstructed as Blender Python"
-              camera-controls
-              touch-action="pan-y"
-              auto-rotate
-              rotation-per-second="12deg"
-              shadow-intensity="0.8"
-              exposure="1.05"
-              environment-image="neutral"
-            ></model-viewer>
-            <span class="drag-hint">↔ Drag to inspect</span>
-          </div>
-        </div>
-      </section>
-
-      <div class="shell stat-rail" aria-label="Project snapshot">
-        <div class="stat"><strong>6</strong><span>edit difficulty levels</span></div>
-        <div class="stat"><strong>10</strong><span>shared Hardest-10 objects</span></div>
-        <div class="stat"><strong>2,640</strong><span>edited programs scored (240 per model)</span></div>
-        <div class="stat"><strong>11</strong><span>editing models tested</span></div>
+      <div class="model-stage">
+        <model-viewer src="./assets/models/deck-fortress.glb" poster="./assets/posters/deck-fortress.png" alt="Fortress reconstructed as a Blender program"
+          camera-controls touch-action="pan-y" auto-rotate rotation-per-second="12deg" shadow-intensity="0.8" exposure="1.05"></model-viewer>
+        <div class="stage-label">A source object: OpenSCAD fortress → readable Blender program (drag to rotate)</div>
       </div>
+    </div>
+  </section>
 
-      <section class="section">
-        <div class="shell">
-          <div class="section-head">
-            <div>
-              <div class="kicker">Project components</div>
-              <h2>A source-code corpus, a difficulty-graded benchmark, and an improvement loop.</h2>
-            </div>
-            <p>The current work covers source-code preparation, controlled editing experiments, and iterative repair using different feedback.</p>
-          </div>
-          <div class="card-grid">
-            <article class="card">
-              <span class="number">01</span>
-              <h3>Editable source corpus</h3>
-              <p>
-                A reconstruction harness turns open-source OpenSCAD programs into readable Blender Python through repeated generation by one agent,
-                matched-view rendering, and independent review by another agent.
-              </p>
-            </article>
-            <article class="card">
-              <span class="number">02</span>
-              <h3>Difficulty-graded benchmark</h3>
-              <p>
-                A model edits an existing Blender Python program. Six levels cover parameter changes, component logic, topology, semantic restyling,
-                and multi-object scene composition.
-              </p>
-            </article>
-            <article class="card">
-              <span class="number">03</span>
-              <h3>Feedback-driven recovery</h3>
-              <p>
-                We test whether render observations, checklist signals, and execution errors help the same model repair its own output over multiple
-                rounds.
-              </p>
-            </article>
-          </div>
-        </div>
-      </section>
+  <div class="shell">
+    <div class="stats">
+      <div class="stat"><b>136</b><span>source programs: 81 reconstructed from real OpenSCAD models + 55 from 3DCodeBench</span></div>
+      <div class="stat"><b>579</b><span>lines per program on average (BlendNet: 38)</span></div>
+      <div class="stat"><b>6</b><span>difficulty levels, from one parameter to scene composition</span></div>
+      <div class="stat"><b>14</b><span>editing models evaluated; 14 verifier models checked against human labels</span></div>
+    </div>
 
-      <section class="section dark">
-        <div class="shell">
-          <div class="section-head">
-            <div>
-              <div class="kicker">Benchmark procedure</div>
-              <h2>From source program to scored edit.</h2>
-            </div>
-            <p>
-              Every model receives the same source and edit request. We run the revised program, render six fixed views, and use a VLM judge (Sonnet
-              5) to evaluate the checklist items.
-            </p>
-          </div>
-          <div class="workflow" aria-label="DECK workflow">
-            <div class="workflow-step">
-              <span>Input</span>
-              <strong>Existing script</strong>
-              <p>Reviewed bpy code produced by the source reconstruction harness.</p>
-            </div>
-            <div class="workflow-step">
-              <span>Task</span>
-              <strong>Edit request</strong>
-              <p>Four generated edits at each of six difficulty levels.</p>
-            </div>
-            <div class="workflow-step">
-              <span>Model</span>
-              <strong>Code revision</strong>
-              <p>The tested LLM returns a complete modified program.</p>
-            </div>
-            <div class="workflow-step">
-              <span>Runtime</span>
-              <strong>Compile + render</strong>
-              <p>Blender execution and six-view evidence generation.</p>
-            </div>
-            <div class="workflow-step">
-              <span>Measure</span>
-              <strong>VLM judge (Sonnet 5)</strong>
-              <p>Item-level checklist judgments from the rendered views.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="shell">
-          <div class="section-head">
-            <div>
-              <div class="kicker">Current benchmark results</div>
-              <h2>Hardest-10 results by model and edit level.</h2>
-            </div>
-            <p>
-              This figure has been regenerated on the exact Hardest-10 subset used by the feedback-improvement experiments: 10 objects × 6 levels × 4
-              edits for every model.
-            </p>
-          </div>
-          <div class="figure-card">
-            <img src="./assets/figures/hardest10-main-figure.svg" alt="Hardest-10 overall model ranking and heatmap of scores by six edit levels" />
-            <div class="figure-meta">
-              <span>VLM checklist score (Sonnet 5) · 11 models × 240 tasks</span>
-              <a href="./benchmark.html">Open the full table →</a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section tint">
-        <div class="shell">
-          <div class="section-head">
-            <div>
-              <div class="kicker">Feedback-loop results</div>
-              <h2>Current results from execution and quality feedback.</h2>
-            </div>
-            <p>
-              Blender error messages repair most initially non-rendering programs. The quality-feedback experiment compares six signals on the same
-              Hardest-10 starting outputs.
-            </p>
-          </div>
-          <div class="finding-grid">
-            <article class="finding">
-              <strong>84.77% → 99.77%</strong>
-              <p>
-                Render success after feeding Blender errors back to the original model. 396 of 402 initial failures were repaired, usually within 2–3
-                rounds.
-              </p>
-            </article>
-            <article class="finding coral">
-              <strong>+0.138</strong>
-              <p>
-                Largest aggregate quality gain: per-item checklist verdicts plus renders, across the nine models that support multimodal feedback.
-              </p>
-            </article>
-          </div>
-          <div class="note" style="margin-top: 22px">
-            <h3>Note on the current feedback setup</h3>
-            <p>
-              Checklist feedback and final scoring currently use the same benchmark rubric and VLM judge (Sonnet 5). A later experiment will separate
-              the feedback and evaluation signals.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="shell">
-          <div class="section-head">
-            <div>
-              <div class="kicker">Project pages</div>
-              <h2>Methods and results by topic.</h2>
-            </div>
-            <p>Each page describes one part of the project and links to the corresponding figures, tables, or interactive examples.</p>
-          </div>
-          <div class="link-cards">
-            <a class="link-card" href="./benchmark.html">
-              <span>Benchmark</span>
-              <h3>Dataset and benchmark results</h3>
-              <p>Hardest-10 subset, six difficulty levels, model results, and notes from manual verification.</p>
-            </a>
-            <a class="link-card" href="./feedback.html">
-              <span>Feedback loops</span>
-              <h3>Feedback experiments</h3>
-              <p>Blender error repair and six quality-feedback conditions on the Hardest-10 subset.</p>
-            </a>
-            <a class="link-card" href="./verifier.html">
-              <span>Verifier</span>
-              <h3>Verifier experiments</h3>
-              <p>Current CLIP-based visual signals and the planned reference-render experiment.</p>
-            </a>
-            <a class="link-card" href="./gallery.html">
-              <span>3D gallery</span>
-              <h3>Compiled source examples</h3>
-              <p>Interactive DECK source objects and representative BlenderLLM BlendNet examples.</p>
-            </a>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <footer class="site-footer">
-      <div class="shell footer-wrap">
-        <span>DECK · Progress update · July 2026</span>
-        <a href="https://github.com/BinjieW/DECK">Project repository ↗</a>
+    <section class="block">
+      <div class="section-head">
+        <h2>How a task works</h2>
+        <p>The model sees only the program and the instruction. Everything else happens in Blender.</p>
       </div>
-    </footer>
-    <script src="./assets/js/site.js"></script>
-  </body>
+      <div class="grid-4">
+        <div class="card"><h3>1 · Source program</h3><p>A complete Blender Python program that builds the object from code, with reusable primitives and named semantic parameters.</p></div>
+        <div class="card"><h3>2 · Edit instruction</h3><p>One of six levels: a parameter, a component, several components, a structural change, a semantic redesign, or a scene.</p></div>
+        <div class="card"><h3>3 · Execute &amp; render</h3><p>The edited program runs in Blender 5.1 and is rendered from six views next to the original.</p></div>
+        <div class="card"><h3>4 · Checklist verdict</h3><p>A multimodal verifier checks each item, including one that the rest of the object is preserved. The edit counts only if every item passes.</p></div>
+      </div>
+    </section>
+
+    <section class="block">
+      <div class="section-head">
+        <h2>A glance at the edits</h2>
+        <p>Original (top) and a passing edit (bottom), six views each. <a href="./cases.html">Browse all 384 tasks →</a></p>
+      </div>
+      <div id="glance"></div>
+    </section>
+
+    <section class="block">
+      <div class="section-head">
+        <h2>What we find</h2>
+      </div>
+      <div class="findings">
+        <div class="finding"><div><h3>Editing realistic programs is hard, and difficulty climbs fast</h3><p>The best model (GPT-6-astra) solves 65% of edits. Across models, the mean all-pass rate falls from 75% on single-parameter edits to 32% as soon as a component must change.</p></div><a class="more" href="./results.html">Results →</a></div>
+        <div class="finding"><div><h3>Open-weight models collapse beyond simple edits</h3><p>Closed-source models average 41%, open-weight models 15%. From L4 on, open-weight models solve almost nothing.</p></div><a class="more" href="./results.html">Results →</a></div>
+        <div class="finding"><div><h3>Models fail by not making the edit, not by breaking the object</h3><p>Of rendered edits that fail, 98% miss a requested change; only 2% fail solely because something unrelated broke.</p></div><a class="more" href="./cases.html">Cases →</a></div>
+        <div class="finding"><div><h3>A VLM verifier agrees with humans on 87–92% of checklist items</h3><p>Accuracy is lowest for structural edits (L4), where judging proportions and part relations from renders is hardest.</p></div><a class="more" href="./verifier.html">Verifier →</a></div>
+        <div class="finding"><div><h3>Critic feedback lifts models by 25–35 points</h3><p>When a model critiques its own renders for a few rounds, all-pass rises from 53% to 78% (GPT-5.6-sol) and from 46% to 81% (GPT-5.6-terra). Most of the gain comes in the first three rounds.</p></div><a class="more" href="./self-improvement.html">Self-improvement →</a></div>
+        <div class="finding"><div><h3>What makes feedback work</h3><p>Checklist-form feedback beats free-form feedback; a separate critic beats judging and revising in one call; a text-only model needs a vision-capable critic to improve.</p></div><a class="more" href="./self-improvement.html">Details →</a></div>
+      </div>
+    </section>
+  </div>
+</main>
+<script>
+Promise.all([loadJSON('./assets/data/highlights.json'), loadJSON('./assets/data/cases_L1.json'), loadJSON('./assets/data/cases_L4.json'), loadJSON('./assets/data/cases_L6.json')]).then(([hl, ...ls]) => {
+  const byId = Object.fromEntries(ls.flatMap((x) => x.cases).map((t) => [t.id, t]));
+  const name = Object.fromEntries(hl.models.map((m) => [m.key, m.name]));
+  const LV = { 1: 'Parameter', 4: 'Structural', 6: 'Scene' };
+  document.getElementById('glance').innerHTML = hl.highlights.filter((h) => h.group === 'level_examples' && [1, 4, 6].includes(h.level)).map((h) => {
+    const t = byId[h.task_id], f = h.featured_models.find((x) => x.all_pass && x.image);
+    return `<div class="case"><div class="case-head"><h3>L${t.lv} · ${LV[t.lv]} · ${esc(t.src)}</h3><span class="small muted">${t.npass}/14 models pass · edit by ${esc(name[f.model])}</span></div>
+      <div class="instr">${esc(t.ins)}</div>
+      <img class="strip" loading="lazy" src="${f.paired_orig_image || t.orig}" alt="original"><img class="strip" style="margin-top:4px" loading="lazy" src="${f.image}" alt="edited"></div>`;
+  }).join('');
+});
+</script>
+</body>
 </html>
