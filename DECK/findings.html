@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DECK · More findings</title>
+  <link rel="stylesheet" href="./assets/css/site.css" />
+  <script src="./assets/js/site.js"></script>
+</head>
+<body>
+<main class="shell">
+  <div class="page-head">
+    <div class="eyebrow">More findings</div>
+    <h1>Things we noticed <em>along the way.</em></h1>
+    <p class="lede">Observations beyond the main tables: how noisy verification is, which judges are strict, why metrics mislead, why voting does not help, and what makes a task hard.</p>
+  </div>
+
+  <section class="block">
+    <div class="section-head"><h2>About the tasks and programs</h2></div>
+    <div class="grid-2">
+      <div class="card"><h3>Same size as 3DCodeBench, more structure</h3><p>Our reconstructed programs are about as long as 3DCodeBench programs, but organized for editing: 28.6 vs 19.7 functions per program, 8.9 vs 5.8 reused helpers, call hierarchies 7.2 vs 3.9 levels deep, and 22.9 vs 15.0 named parameters. BlendNet scripts have none of this (0.1 functions on average).</p></div>
+      <div class="card"><h3>Some tasks nobody solves, some everybody does</h3><p>38 of 384 tasks are failed by all 14 models, and 12 are passed by all. Procedural 3DCodeBench objects are the hardest to edit (23.8% mean all-pass), ahead of furniture (31.8%), manufacturing (38.9%), and architecture (39.4%).</p></div>
+      <div class="card"><h3>Crashes are not only about difficulty</h3><p>Claude Sonnet 4.6 executes only 69% of its L1 edits but 97% at L6, and Claude Opus 4.8 drops to 64% at L2. Their syntax-valid rate is 84–86%: these failures come from broken output, not hard edits.</p></div>
+      <div class="card"><h3>Even strong models misread geometry</h3><p>Asked to narrow a sink basin from side to side, GPT-6-astra, GPT-5.6-sol, and Claude Sonnet 5 all shorten it front to back instead; Gemma 4 31B gets it right. <a href="./cases.html">See the edit-not-made cases →</a></p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="section-head"><h2>About judging edits</h2></div>
+    <div id="extras"></div>
+  </section>
+</main>
+<script>
+const SHORT = {
+  verifier_noise: ['Same code, same verifier, different verdict', 'Re-scoring identical edits with the same verifier flips the pass/fail verdict on 7–22% of tasks (21.9% for GPT-5.6-sol edits). The flips go both ways and cancel out, so model-level scores barely move.'],
+  stricter_verifier_luna: ['Verifiers differ in strictness', 'On the same final edits, GPT-6-luna passes 41.6% and GPT-5.6-terra 59.8%. Method rankings agree (r = 0.93), but individual verdicts match only 70% of the time.'],
+  golden_checklist_no_gain: ['Giving the critic the real checklist does not help', 'A critic that sees the benchmark’s own checklist does no better than free-form feedback (−0.4 points). A critic that writes its own requirements and checks them one by one does (+4.3).'],
+  image_metrics_weak: ['Image and geometry metrics are weak judges', 'CLIP separates passing from failing edits only slightly better than chance (AUC 0.62–0.64). Geometry metrics against a reference edit are near chance, and can rank an unchanged object above a correct edit.'],
+  high_effort_majority: ['Majority voting does not make verifiers better', 'Across 15 verifier settings, the majority of three calls is only 0.2 points more accurate than a single call on average (−1.9 to +3.0). Three high-effort calls disagree with one medium call on 8% of tasks, and in those cases the majority is wrong about as often as the single call (46% vs 51%).'],
+};
+loadJSON('./assets/data/extras.json').then((e) => {
+  document.getElementById('extras').innerHTML = e.extras.filter((x) => x.id !== 'golden_checklist_no_gain').map((x) => {
+    const [title, text] = SHORT[x.id] || [x.title, x.one_sentence_finding];
+    const ex = x.example, imgs = (ex.images || []).filter((im) => !/sixview/.test(im.path)).slice(0, 3);
+    const texts = (Array.isArray(ex.texts) ? ex.texts : []).filter((t) => !/^Result/.test(t.label)).slice(0, 2);
+    return `<div class="case"><div class="case-head"><h3>${esc(title)}</h3></div>
+      <p style="margin:0 0 12px">${esc(text)}</p>
+      ${ex.instruction ? `<div class="strip-label">Example task</div><div class="instr" style="font-size:14.5px">${esc(ex.instruction.split('; ').slice(1).join('; ') || ex.instruction)}</div>` : ''}
+      <div class="grid-${imgs.length > 2 ? 3 : 2}">${imgs.map((im) => `<figure style="margin:0"><img class="strip" loading="lazy" src="${im.path}" alt=""><figcaption class="small muted" style="margin-top:4px">${esc((im.caption || '').replace(/Terra/g, 'GPT-5.6-terra').replace(/Luna/g, 'GPT-6-luna'))}</figcaption></figure>`).join('')}</div>
+      ${texts.length ? `<ul class="verdicts" style="margin-top:10px">${texts.map((t) => `<li><b style="color:var(--ink)">${esc(t.label.replace(/\s*\(20\d\d-\d\d-\d\d[^)]*\)/, ''))}:</b> ${esc(t.text.length > 260 ? t.text.slice(0, 260) + '…' : t.text)}</li>`).join('')}</ul>` : ''}</div>`;
+  }).join('');
+});
+</script>
+</body>
+</html>

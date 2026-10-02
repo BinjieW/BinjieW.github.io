@@ -1,349 +1,96 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="DECK Hardest-10 benchmark design, results, and model-level analysis." />
-    <title>Benchmark · DECK</title>
-    <link rel="stylesheet" href="./assets/css/site.css" />
-  </head>
-  <body>
-    <a class="skip-link" href="#main">Skip to content</a>
-    <header class="site-header">
-      <div class="shell nav-wrap">
-        <a class="brand" href="./index.html" aria-label="DECK home"> <span class="brand-mark">D</span><span>DECK</span> </a>
-        <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">Menu</button>
-        <nav class="site-nav" aria-label="Primary navigation">
-          <a href="./index.html" data-page="index.html">Overview</a>
-          <a href="./benchmark.html" data-page="benchmark.html">Benchmark</a>
-          <a href="./feedback.html" data-page="feedback.html">Feedback loops</a>
-          <a href="./verifier.html" data-page="verifier.html">Verifier</a>
-          <a href="./gallery.html" data-page="gallery.html">3D gallery</a>
-          <span class="nav-status">Research in progress</span>
-        </nav>
-      </div>
-    </header>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DECK · Benchmark</title>
+  <link rel="stylesheet" href="./assets/css/site.css" />
+  <script src="./assets/js/site.js"></script>
+</head>
+<body>
+<main class="shell">
+  <div class="page-head">
+    <div class="eyebrow">Benchmark</div>
+    <h1>Realistic programs, <em>graded edits.</em></h1>
+    <p class="lede">DECK needs source programs that are faithful to a real object, readable, and editable end to end. We build them by reconstructing real-world OpenSCAD models as Blender Python under rendered feedback, and add procedural programs from 3DCodeBench.</p>
+  </div>
 
-    <main id="main">
-      <section class="page-hero">
-        <div class="shell">
-          <div class="crumbs"><a href="./index.html">DECK</a> / Benchmark</div>
-          <div class="page-hero-grid">
-            <div>
-              <div class="kicker">Benchmark setup and results</div>
-              <h1>Hardest-10 benchmark.</h1>
-            </div>
-            <p class="lead">
-              Hardest-10 is used for both the main model comparison and the feedback experiments. It contains 10 source objects, 6 difficulty levels,
-              and 4 edits per level: 240 edit requests per model.
-            </p>
-          </div>
-        </div>
-      </section>
+  <section class="block">
+    <div class="section-head"><h2>136 source programs</h2><p>Four groups. Every program builds the whole object from code, with no imported meshes or pre-built scene.</p></div>
+    <div class="grid-4" id="cats"></div>
+    <div class="gallery" id="sample" style="margin-top:18px"></div>
+    <p style="margin-top:16px"><a href="./gallery.html">See all 136 objects →</a></p>
+  </section>
 
-      <section class="section tight">
-        <div class="shell metric-grid">
-          <div class="metric"><strong>10</strong><span>reconstructed source objects</span></div>
-          <div class="metric"><strong>240</strong><span>unique edit tasks</span></div>
-          <div class="metric"><strong>11</strong><span>editing models</span></div>
-          <div class="metric"><strong>2,640</strong><span>edited programs scored</span></div>
-        </div>
-      </section>
+  <section class="block">
+    <div class="section-head"><h2>Why not convert OpenSCAD directly?</h2><p>A mechanical SCAD → CSG → Blender conversion keeps the geometry but produces code no one can edit. The same flat hinge, two ways:</p></div>
+    <div class="grid-2" id="code"></div>
+  </section>
 
-      <section class="section tint">
-        <div class="shell">
-          <div class="section-head">
-            <div>
-              <div class="kicker">Difficulty gradient</div>
-              <h2>Six qualitatively different kinds of edit.</h2>
-            </div>
-            <p>
-              The levels adapt the SOLO taxonomy: difficulty grows with how many code regions and artifact relationships must be understood
-              together—not simply with prompt length.
-            </p>
-          </div>
-          <div class="level-list">
-            <article class="level">
-              <small>Level 1 · Unistructural</small>
-              <h3>Single parameter</h3>
-              <p>Change an explicit color, size, position, or rotation value already present in code.</p>
-            </article>
-            <article class="level">
-              <small>Level 2 · Unistructural</small>
-              <h3>Single component</h3>
-              <p>Coordinate a loop, primitive type, or local spatial rule within one component.</p>
-            </article>
-            <article class="level">
-              <small>Level 3 · Multistructural</small>
-              <h3>Multiple components</h3>
-              <p>Apply several independent changes across different code blocks without interference.</p>
-            </article>
-            <article class="level">
-              <small>Level 4 · Relational</small>
-              <h3>Topology & structure</h3>
-              <p>Add holes, merge geometry, or integrate new features with existing object relationships.</p>
-            </article>
-            <article class="level">
-              <small>Level 5 · Relational</small>
-              <h3>Semantic restyling</h3>
-              <p>Interpret an abstract style while preserving the original object’s recognizable identity.</p>
-            </article>
-            <article class="level">
-              <small>Level 6 · Extended abstract</small>
-              <h3>Scene composition</h3>
-              <p>Build multiple new objects, environmental context, plausible scale, lighting, and relations.</p>
-            </article>
-          </div>
-        </div>
-      </section>
+  <section class="block">
+    <div class="section-head"><h2>Render-grounded reconstruction</h2><p>A generator agent writes Blender Python, renders it, and compares it with the OpenSCAD renders; an independent reviewer agent returns concrete feedback; the loop repeats until the reviewer accepts. Most objects need two iterations; intricate ones take dozens.</p></div>
+    <div class="chips" id="recon-pick"></div>
+    <div id="recon" style="margin-top:14px"></div>
+  </section>
 
-      <section class="section">
-        <div class="shell">
-          <div class="section-head">
-            <div>
-              <div class="kicker">Main figure · regenerated</div>
-              <h2>The exact Hardest-10 snapshot.</h2>
-            </div>
-            <p>
-              Overall score is the mean checklist score across all 240 tasks for a model. A VLM judge (Sonnet 5) evaluates each checklist item from
-              six rendered views. Render failures count as zero.
-            </p>
-          </div>
-          <div class="figure-card">
-            <img src="./assets/figures/hardest10-main-figure.svg" alt="Hardest-10 overall model score bars and per-level heatmap" />
-            <div class="figure-meta">
-              <span>10 objects × 6 levels × 4 edits · 11 models · VLM judge (Sonnet 5)</span>
-              <a href="./assets/data/hardest10-model-results.csv">Download CSV ↓</a>
-            </div>
-          </div>
-        </div>
-      </section>
+  <section class="block">
+    <div class="section-head"><h2>Six levels of edits</h2><p>Difficulty grows with the relationship an edit must establish between the instruction and the existing program. Each object gets four instructions per level, each with a checklist (2–6 items) that includes one item for preserving the rest of the object.</p></div>
+    <div class="levels" id="levels"></div>
+    <div id="lv-examples" style="margin-top:20px"></div>
+  </section>
 
-      <section class="section tight">
-        <div class="shell">
-          <div class="section-head">
-            <div>
-              <div class="kicker">Main table · same subset</div>
-              <h2>Observed results by model and level.</h2>
-            </div>
-            <p>
-              “Exec.” is the round-0 Blender render success rate. Overall and level scores are means of the VLM checklist judgments from Sonnet 5.
-            </p>
-          </div>
-          <div class="table-wrap" role="region" aria-label="Hardest-10 model results" tabindex="0">
-            <table>
-              <thead>
-                <tr>
-                  <th>Rank</th>
-                  <th>Model</th>
-                  <th>Overall</th>
-                  <th>L1</th>
-                  <th>L2</th>
-                  <th>L3</th>
-                  <th>L4</th>
-                  <th>L5</th>
-                  <th>L6</th>
-                  <th>Exec.</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>Claude Opus 4.8</td>
-                  <td class="overall">0.752</td>
-                  <td>0.800</td>
-                  <td>0.838</td>
-                  <td>0.825</td>
-                  <td>0.602</td>
-                  <td>0.825</td>
-                  <td>0.622</td>
-                  <td>96.7%</td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Claude Sonnet 5</td>
-                  <td class="overall">0.727</td>
-                  <td>0.800</td>
-                  <td>0.788</td>
-                  <td>0.758</td>
-                  <td>0.596</td>
-                  <td>0.842</td>
-                  <td>0.581</td>
-                  <td>98.8%</td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>GPT-5.5</td>
-                  <td class="overall">0.669</td>
-                  <td>0.800</td>
-                  <td>0.838</td>
-                  <td>0.750</td>
-                  <td>0.683</td>
-                  <td>0.475</td>
-                  <td>0.470</td>
-                  <td>85.0%</td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td>Claude Sonnet 4.6</td>
-                  <td class="overall">0.642</td>
-                  <td>0.775</td>
-                  <td>0.788</td>
-                  <td>0.742</td>
-                  <td>0.606</td>
-                  <td>0.658</td>
-                  <td>0.282</td>
-                  <td>89.2%</td>
-                </tr>
-                <tr>
-                  <td>5</td>
-                  <td>GPT-5.6 Terra</td>
-                  <td class="overall">0.601</td>
-                  <td>0.800</td>
-                  <td>0.813</td>
-                  <td>0.775</td>
-                  <td>0.613</td>
-                  <td>0.490</td>
-                  <td>0.114</td>
-                  <td>77.9%</td>
-                </tr>
-                <tr>
-                  <td>6</td>
-                  <td>Claude Haiku 4.5</td>
-                  <td class="overall">0.599</td>
-                  <td>0.800</td>
-                  <td>0.713</td>
-                  <td>0.725</td>
-                  <td>0.521</td>
-                  <td>0.540</td>
-                  <td>0.299</td>
-                  <td>87.9%</td>
-                </tr>
-                <tr>
-                  <td>7</td>
-                  <td>GPT-OSS-120B</td>
-                  <td class="overall">0.594</td>
-                  <td>0.800</td>
-                  <td>0.813</td>
-                  <td>0.758</td>
-                  <td>0.560</td>
-                  <td>0.448</td>
-                  <td>0.184</td>
-                  <td>88.8%</td>
-                </tr>
-                <tr>
-                  <td>8</td>
-                  <td>GPT-5.6 Sol</td>
-                  <td class="overall">0.583</td>
-                  <td>0.775</td>
-                  <td>0.838</td>
-                  <td>0.700</td>
-                  <td>0.538</td>
-                  <td>0.483</td>
-                  <td>0.163</td>
-                  <td>76.7%</td>
-                </tr>
-                <tr>
-                  <td>9</td>
-                  <td>Gemma 4 31B</td>
-                  <td class="overall">0.576</td>
-                  <td>0.800</td>
-                  <td>0.750</td>
-                  <td>0.758</td>
-                  <td>0.527</td>
-                  <td>0.406</td>
-                  <td>0.216</td>
-                  <td>85.8%</td>
-                </tr>
-                <tr>
-                  <td>10</td>
-                  <td>GPT-5.6 Luna</td>
-                  <td class="overall">0.564</td>
-                  <td>0.750</td>
-                  <td>0.813</td>
-                  <td>0.775</td>
-                  <td>0.625</td>
-                  <td>0.371</td>
-                  <td>0.051</td>
-                  <td>75.4%</td>
-                </tr>
-                <tr>
-                  <td>11</td>
-                  <td>Qwen3-Coder-Next</td>
-                  <td class="overall">0.472</td>
-                  <td>0.800</td>
-                  <td>0.775</td>
-                  <td>0.683</td>
-                  <td>0.363</td>
-                  <td>0.125</td>
-                  <td>0.085</td>
-                  <td>70.4%</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <p class="table-note">
-            Scores include the 2026-07-20 empty-judge response repair. Machine-readable versions:
-            <a href="./assets/data/hardest10-model-results.csv">CSV</a> · <a href="./assets/data/hardest10-model-results.json">JSON</a>.
-          </p>
-        </div>
-      </section>
+  <section class="block">
+    <div class="section-head"><h2>How DECK differs from other Blender benchmarks</h2></div>
+    <div class="table-wrap"><table class="data" id="cmp"></table></div>
+    <p class="small muted" style="margin-top:10px">End-to-end code: the program builds the whole artifact. Complex code: programs average more than 200 lines. Open-ended eval.: each output is judged on whether it satisfies the instruction rather than whether it matches one target.</p>
+  </section>
+</main>
+<script>
+const LVN = [['Parameter', 'Change one explicit value such as size, count, color, or position.'], ['Component', 'Modify the construction logic of one component.'], ['Multi-component', 'Apply several independent component edits.'], ['Structural', 'Change topology or coupled part relationships, e.g., holes or joins.'], ['Semantic', 'Reinterpret the object under a new concept while keeping its identity.'], ['Scene', 'Compose a coherent multi-object environment around the object.']];
+document.getElementById('levels').innerHTML = LVN.map(([t, d], i) => `<div class="level"><b>L${i + 1}</b><h3>${t}</h3><p>${d}</p></div>`).join('');
 
-      <section class="section tint">
-        <div class="shell">
-          <div class="note">
-            <h3>Notes from manual verification of the current framework</h3>
-            <p>
-              Manual verification identified several recurring issues: some Level 1 changes are visually small or normalized away; RGB renders cannot
-              directly verify metadata or topology in some Level 3–4 tasks; and later levels are more sensitive to occlusion, execution success, and
-              semantic judgment. We plan to address these issues in the next benchmark version.
-            </p>
-          </div>
-          <div class="split" style="margin-top: 28px">
-            <div class="stack">
-              <article class="mini-card">
-                <h3>Highest observed scores</h3>
-                <p>Opus 4.8 (0.752) and Sonnet 5 (0.727) lead overall, with especially strong L5 scores and high execution success.</p>
-              </article>
-              <article class="mini-card">
-                <h3>Render success</h3>
-                <p>
-                  The baseline contains 402 render failures. These tasks receive zero in the current aggregate score and are reported separately in
-                  the execution column.
-                </p>
-              </article>
-            </div>
-            <div class="stack">
-              <article class="mini-card">
-                <h3>Level 1 manual check</h3>
-                <p>
-                  Manual inspection found that many observed zeros completed the intended code-side change, but the change was not visible enough in
-                  the six rendered views.
-                </p>
-              </article>
-              <article class="mini-card">
-                <h3>Level 6 tasks</h3>
-                <p>
-                  Level 6 combines multiple requirements, including object completeness, relative scale, spatial relationships, visibility, and
-                  overall scene composition.
-                </p>
-              </article>
-            </div>
-          </div>
-          <div class="downloads" style="margin-top: 24px">
-            <a class="download" href="./assets/reports/deck-hardest10-audit.pdf">PDF · Hardest-10 audit</a>
-            <a class="download" href="./verifier.html">Read verifier experiments →</a>
-          </div>
-        </div>
-      </section>
-    </main>
+const CMP = [['Benchmark', 'Editing', 'End-to-end code', 'Complex code', 'Multiple sources', 'Difficulty levels', 'Open-ended eval.', 'Lines / program'],
+  ['CADBench', 0, 1, 0, 1, 0, 1, '38'], ['3DCodeBench', 0, 1, 1, 0, 0, 0, '476'], ['3DHarnessBench', 0, 1, 1, 0, 0, 0, '876'],
+  ['Nova3D-Bench', 0, 1, 1, 0, 1, 1, '489'], ['BlenderGym', 1, 0, 0, 0, 0, 0, '51'], ['BlenderBench', 1, 0, 0, 1, 1, 0, '25'], ['DECK (ours)', 1, 1, 1, 1, 1, 1, '579']];
+document.getElementById('cmp').innerHTML = `<thead><tr>${CMP[0].map((h) => `<th>${h}</th>`).join('')}</tr></thead><tbody>` +
+  CMP.slice(1).map((r) => `<tr${r[0].startsWith('DECK') ? ' style="background:#eef5f1;font-weight:600"' : ''}><td>${r[0]}</td>${r.slice(1, 7).map((v) => `<td style="text-align:center">${v ? '<span class="ck">yes</span>' : '<span class="xk">—</span>'}</td>`).join('')}<td>${r[7]}</td></tr>`).join('') + '</tbody>';
 
-    <footer class="site-footer">
-      <div class="shell footer-wrap">
-        <span>DECK · Benchmark</span>
-        <a href="./feedback.html">Next: feedback loops →</a>
-      </div>
-    </footer>
-    <script src="./assets/js/site.js"></script>
-  </body>
+Promise.all([loadJSON('./assets/data/sources.json'), loadJSON('./assets/data/recon.json'), loadJSON('./assets/data/code.json'), loadJSON('./assets/data/highlights.json'),
+  ...[1, 2, 3, 4, 5, 6].map((l) => loadJSON(`./assets/data/cases_L${l}.json`))]).then(([src, rec, code, hl, ...lv]) => {
+  const CAT = [['architecture', 'Architecture', 'Reconstructed OpenSCAD'], ['furniture', 'Furniture', 'Reconstructed OpenSCAD'], ['manufacture', 'Manufacturing', 'Reconstructed OpenSCAD'], ['3DCodeBench', '3DCodeBench', 'Procedural programs, used as released']];
+  const med = (a) => { const s = [...a].sort((x, y) => x - y); return s[Math.floor(s.length / 2)]; };
+  document.getElementById('cats').innerHTML = CAT.map(([k, n, d]) => {
+    const g = src.filter((s) => s.category === k);
+    return `<div class="stat"><b>${g.length}</b><span><strong>${n}</strong> · ${d}<br>${Math.round(g.reduce((a, s) => a + s.loc, 0) / g.length)} lines on average, median ${med(g.map((s) => s.components))} parts</span></div>`;
+  }).join('');
+  const pick = ['job_0068_medieval-fortress-generator', 'job_0001_flat-hinge', 'job_0028_parametric-spiral-stairs', 'job_0052_storage-bed', 'job_0124_small-bit-chuck', '3dcodebench_Lobster_seed0'];
+  document.getElementById('sample').innerHTML = pick.map((id) => src.find((s) => s.id === id)).filter(Boolean).map((s) => `<div class="tile"><img loading="lazy" src="${s.thumb}" alt=""><div class="cap"><b>${esc(s.display_name)}</b><span>${esc(s.category)} · ${s.loc} lines</span></div></div>`).join('');
+
+  const P = code.primary, Rw = code.raw_conversion;
+  document.getElementById('code').innerHTML = `<div class="card"><h3>Direct conversion</h3><p class="small">${Rw.stats.loc.toLocaleString()} lines · ${Rw.stats.funcs} functions · ${Rw.stats.apply_boolean_calls} boolean operations · ${Rw.stats.matrix_literals} raw matrices</p><pre class="code" style="margin-top:10px;max-height:360px">${esc(Rw.code)}</pre></div>
+    <div class="card"><h3>DECK reconstruction</h3><p class="small">${P.program_stats.loc} lines · ${P.program_stats.funcs} functions · reusable primitives + named parameters</p><pre class="code" style="margin-top:10px;max-height:170px">${esc(P.primitive_helper.code)}</pre><pre class="code" style="margin-top:8px;max-height:180px">${esc(P.orchestration.code)}</pre></div>`;
+
+  const jobs = rec.jobs.filter((j) => j.kept_in_benchmark !== false);
+  const showJob = (j) => {
+    document.querySelectorAll('#recon-pick .chip').forEach((c) => c.classList.toggle('on', c.dataset.id === j.id));
+    document.getElementById('recon').innerHTML = `<p class="small muted">${esc(j.display_name)} · ${j.n_iterations} iterations · final program ${j.final_loc} lines, ${j.final_funcs} functions</p>
+      <div class="steps"><div class="step"><img src="${j.scad_render}" alt=""><b>OpenSCAD source</b><div class="fb">The target the generator must match.</div></div>` +
+      j.iterations.map((it) => `<div class="step"><img loading="lazy" src="${it.img}" alt=""><b>${esc(it.label)}</b>${it.feedback ? `<div class="fb">Reviewer: “${esc(it.feedback)}”</div>` : ''}</div>`).join('') + '</div>';
+  };
+  document.getElementById('recon-pick').innerHTML = jobs.map((j) => `<button class="chip" data-id="${j.id}">${esc(j.display_name)} · ${j.n_iterations}</button>`).join('');
+  document.querySelectorAll('#recon-pick .chip').forEach((c) => (c.onclick = () => showJob(jobs.find((j) => j.id === c.dataset.id))));
+  showJob(jobs.find((j) => j.id === 'job_0068_medieval-fortress-generator') || jobs[0]);
+
+  const byId = Object.fromEntries(lv.flatMap((x) => x.cases).map((t) => [t.id, t]));
+  const name = Object.fromEntries(hl.models.map((m) => [m.key, m.name]));
+  document.getElementById('lv-examples').innerHTML = hl.highlights.filter((h) => h.group === 'level_examples').map((h) => {
+    const t = byId[h.task_id], f = h.featured_models.find((x) => x.all_pass && x.image) || h.featured_models.find((x) => x.image);
+    return `<div class="case"><div class="case-head"><h3>L${t.lv} · ${esc(LVN[t.lv - 1][0])}: ${esc(t.src)}</h3><span class="small muted">${t.npass}/14 models pass</span></div>
+      <div class="instr">${esc(t.ins)}</div><ol class="checklist">${t.ck.map(([x, p]) => `<li class="${p ? 'pres' : ''}">${esc(x)}</li>`).join('')}</ol>
+      <div class="strip-label">Original</div><img class="strip" loading="lazy" src="${f.paired_orig_image || t.orig}" alt="">
+      <div class="strip-label">Edited by ${esc(name[f.model])} <span class="badge ${f.all_pass ? 'pass' : 'fail'}">${f.all_pass ? 'Pass' : 'Fail'}</span></div><img class="strip" loading="lazy" src="${f.image}" alt=""></div>`;
+  }).join('') + `<p><a href="./cases.html">Browse all 384 tasks →</a></p>`;
+});
+</script>
+</body>
 </html>
