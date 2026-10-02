@@ -139,3 +139,5 @@ function stackedBars(el, { parts, rows }) {
 }
 
 document.addEventListener('DOMContentLoaded', mountChrome);
+// Open any render strip at full size in a new tab (useful on small screens).
+document.addEventListener('click', (e) => { if (e.target.matches && e.target.matches('img.strip')) window.open(e.target.src, '_blank'); });
