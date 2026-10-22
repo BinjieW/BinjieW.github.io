@@ -6,7 +6,7 @@ img: assets/img/publication_preview/ChineseFactEval.png
 importance: 2
 redirect: https://gair-nlp.github.io/ChineseFactEval/
 category: work
-selected: true
+selected: false
 ---
 
 This is a second placeholder project entry for DualEdit2.

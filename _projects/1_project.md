@@ -6,7 +6,7 @@ img: assets/img/publication_preview/factool_small.png
 importance: 1
 redirect: https://github.com/GAIR-NLP/factool/
 category: work
-selected: true
+selected: false
 ---
 
 Every project has a beautiful feature showcase page.

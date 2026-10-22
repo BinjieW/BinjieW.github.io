@@ -27,6 +27,10 @@ social: true # includes social icons at the bottom of the page
 #   limit: 3 # leave blank to include all the blog posts
 ---
 
-I’m Binjie Wang, currently a senior undergraduate student at Fudan University. I major in computer science and I work on advancing Large Language Models and Vision–Language Models, with my past and current research interests centered on factuality, knowledge editing, test-time compute, and reinforcement learning.
+I'm Binjie Wang, a first-year CS PhD student at the [Courant Institute](https://cs.nyu.edu/), New York University, advised by [Prof. Chen Zhao](https://henryzhao5852.github.io/) and [Prof. He He](https://hhexiy.ai/). I received my bachelor's degree from Fudan University.
 
-I was fortunate to be advised by [Prof. Pengfei Liu](https://pfliu.com) at the GAIR Lab, Shanghai Jiao Tong University (SJTU). I also spent a wonderful semester at Harvard University as a Visiting Undergraduate Student (VUS), where I interned with the Harvard Visual Computing Group (VCG) under [Prof. Hanspeter Pfister](https://vcg.seas.harvard.edu/people/hanspeter-pfister). I am now working closely with [Prof. Kianté Brantley](https://xkianteb.github.io/), focusing on test-time compute and reinforcement learning.
+I'm broadly interested in making language models more capable and reliable on real-world tasks. My current research interests lie in code generation, continual learning, and agentic reasoning.
+
+During my undergraduate studies, I was fortunate to work with [Prof. Pengfei Liu](https://pfliu.com), [Prof. Hanspeter Pfister](https://vcg.seas.harvard.edu/people/hanspeter-pfister), and [Prof. Kianté Brantley](https://xkianteb.github.io/).
+
+I'm always happy to chat about research and potential collaborations. Feel free to reach out through [email](mailto:bw3054@nyu.edu)!
