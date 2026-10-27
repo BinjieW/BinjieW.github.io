@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3DCodeEdit: Benchmarking Instruction-Guided 3D Program Editing</title>
+<meta name="description" content="3DCodeEdit is a benchmark of 2,592 instruction-guided editing tasks over 108 Blender programs that build 3D objects entirely in code, judged from renders against checklists.">
+<meta property="og:title" content="3DCodeEdit: Benchmarking Instruction-Guided 3D Program Editing">
+<meta property="og:description" content="2,592 editing tasks over 108 Blender programs. Edits range from one parameter to structural changes, style redesign, and scene composition.">
+<meta property="og:image" content="https://binjiew.github.io/3DCodeEdit/assets/img/teaser.png">
+<meta name="color-scheme" content="light">
+<link rel="icon" type="image/png" href="assets/img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/site.css?v=1">
+<script type="importmap">
+{ "imports": { "three": "./assets/lib/three/three.module.min.js", "three/addons/": "./assets/lib/three/addons/" } }
+</script>
+<script type="module" src="assets/js/main.min.js?v=1"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="#top" aria-label="3DCodeEdit home"><img src="assets/img/logo.png" alt="3DCodeEdit" width="168" height="24"></a>
+    <nav class="toplinks" aria-label="Sections">
+      <a href="#task">Task</a>
+      <a href="#benchmark">Benchmark</a>
+      <a href="#examples">Examples</a>
+      <a href="#leaderboard">Leaderboard</a>
+      <a href="#analysis">Analysis</a>
+      <a href="#feedback">Multi-turn</a>
+      <a href="#cite">Cite</a>
+    </nav>
+    <a class="toplink-code" href="https://github.com/BinjieW/3DCodeEdit">GitHub</a>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ============================================================ HERO -->
+<section class="hero">
+  <div class="wrap">
+    <h1><span class="h1-name">3DCodeEdit</span><span class="h1-sub">Benchmarking Instruction-Guided 3D Program Editing</span></h1>
+    <p class="authors">
+      <span>Binjie Wang<sup>1*</sup></span>
+      <span>Xinran Zhao<sup>2*</sup></span>
+      <span>Shoubin Yu<sup>3</sup></span>
+      <span>Xiang Li<sup>4</sup></span>
+      <span>Silong Yong<sup>2</sup></span>
+      <span>Chenyang Yang<sup>2</sup></span>
+      <span>Tianyu Chen<sup>5</sup></span>
+      <span>Ruofei Du<sup>6</sup></span>
+      <span>He He<sup>1</sup></span>
+      <span>Chen Zhao<sup>1</sup></span>
+      <span>Tongshuang Wu<sup>2</sup></span>
+    </p>
+    <p class="affils">
+      <span><sup>1</sup>New York University</span>
+      <span><sup>2</sup>Carnegie Mellon University</span>
+      <span><sup>3</sup>UNC Chapel Hill</span>
+      <span><sup>4</sup>University of Illinois Urbana-Champaign</span>
+      <span><sup>5</sup>The University of Texas at Austin</span>
+      <span><sup>6</sup>Google</span>
+    </p>
+    <p class="equal">*Equal contribution</p>
+    <div class="buttons">
+      <a class="btn btn-disabled" aria-disabled="true" title="The arXiv link will be added when the paper is posted">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h9l5 5v15H6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 2v6h6M9 13h8M9 17h8" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+        Paper <small>arXiv soon</small></a>
+      <a class="btn" href="https://github.com/BinjieW/3DCodeEdit">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .5a11.5 11.5 0 0 0-3.6 22.4c.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A11.5 11.5 0 0 0 12 .5Z"/></svg>
+        Code</a>
+      <a class="btn" href="https://huggingface.co/datasets/BinjieW/3DCodeEdit">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5.5" rx="8" ry="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M4 5.5v13c0 1.7 3.6 3 8 3s8-1.3 8-3v-13M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+        Data</a>
+      <a class="btn" href="#leaderboard">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        Leaderboard</a>
+      <a class="btn" href="#cite">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h4v4H7zM7 11c0 3-1 5-3 6M15 7h4v4h-4zM15 11c0 3-1 5-3 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        BibTeX</a>
+    </div>
+    <figure class="teaser">
+      <a href="assets/img/teaser.png" class="fig-link"><picture>
+        <source srcset="assets/img/teaser.webp" type="image/webp">
+        <img src="assets/img/teaser.png" width="2400" height="1353" alt="Overview of 3DCodeEdit: an edit prompt and a Blender program, six models' edits judged against a checklist, the six edit types on one armchair, and the all-pass rates of ten models.">
+      </picture></a>
+      <figcaption>
+        <b>3DCodeEdit at a glance.</b> (a) A task gives a model an existing Blender program and an edit instruction.
+        (b) A verifier judges each edited object from rendered views against a checklist of requested changes and
+        preservation requirements. (c) Six edit types range from parameter changes to structural edits, style redesign,
+        and scene composition. (d) The best model passes 69.9% of the 2,592 tasks.
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================================================ AT A GLANCE -->
+<section class="glance">
+  <div class="wrap">
+    <div class="stats" role="list">
+      <div class="stat" role="listitem"><b>108</b><span>Blender programs that build each object entirely in code</span></div>
+      <div class="stat" role="listitem"><b>2,592</b><span>editing tasks, 4 per program and edit type</span></div>
+      <div class="stat" role="listitem"><b>6</b><span>edit types, from one parameter to scene composition</span></div>
+      <div class="stat" role="listitem"><b>12,477</b><span>checklist items</span></div>
+      <div class="stat" role="listitem"><b>17</b><span>models in the main evaluation, 44 tracked over time</span></div>
+    </div>
+    <div class="abstract">
+      <h2 class="eyebrow-h">Abstract</h2>
+      <p>Language models increasingly create 3D content through code, with practical workflows often relying on editing
+      existing programs rather than regenerating them, for speed and precise control. Such edits require understanding what a
+      program builds and foreseeing how a change reshapes it, yet prior benchmarks mostly evaluate generation or simple edits
+      against a reference. In this paper, we introduce <b>3DCodeEdit</b>, a benchmark of 2,592 instruction-guided editing tasks
+      over 108 Blender programs that construct objects entirely in code. Its edits range from parameter to structural changes,
+      style redesign, and scene composition, and are judged from renders against human-reviewed checklists. Across 17 models,
+      the average success rate is only 37%, and even the strongest models complete fewer than 60% of structural and style edits.
+      As models become more capable, their failures shift to geometric foresight, where the code runs but builds the wrong
+      shape. We therefore study whether <b>multi-turn feedback</b> can compensate for this missing foresight. Feedback from a
+      separate reviewer model that describes how the renders differ from the request helps most, more than maximum reasoning
+      effort or an agent harness, and can let a 27B model surpass the single-shot rate of a 2.8T-parameter model.</p>
+    </div>
+    <div class="findings">
+      <article class="finding">
+        <span class="finding-num">37.1%</span>
+        <h3>Editing is hard, and harder with scope</h3>
+        <p>The average all-pass rate falls from 82.9% on parameter edits to 24.6% on structural edits. Even Claude Opus 5.5 and GPT-6.1-sol pass fewer than 60% of structural and style edits.</p>
+      </article>
+      <article class="finding">
+        <span class="finding-num">18% → 40%</span>
+        <h3>Failures shift to geometric foresight</h3>
+        <p>Weak models misread the task or write code that crashes. Stronger models write code that runs but builds the wrong shape: this share of failures doubles across capability bands.</p>
+      </article>
+      <article class="finding">
+        <span class="finding-num">64.7% → 85.6%</span>
+        <h3>A reviewer supplies the missing foresight</h3>
+        <p>A separate reviewer that describes how the renders differ from the request lifts GPT-6.1-sol by 21 points, more than its best reasoning effort (74.7%) or an agent harness.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ TASK + EDIT TYPES -->
+<section id="task" class="sec">
+  <div class="wrap">
+    <p class="kicker">The task</p>
+    <h2>Edit a 3D object by editing the program that builds it</h2>
+    <p class="lede">Each task gives a model a complete Blender Python program and an edit instruction, and asks for the
+      complete edited program. The instruction says how the object should look; the model can only change the code. It
+      must work out what shape the code builds, foresee how a change reshapes it, and write code that runs. Both programs
+      are executed and rendered from six matched views, and a multimodal verifier answers one yes/no question per
+      checklist item: one for each requested change, plus one for preserving the rest. A task passes only if every item passes.</p>
+
+    <div class="ladder" id="ladder">
+      <div class="tabs" role="tablist" aria-label="Edit types" id="ladder-tabs"></div>
+      <div class="ladder-body">
+        <div class="ladder-text" id="ladder-text"></div>
+        <div class="viewer viewer-ladder" id="ladder-viewer">
+          <div class="pane-3d" data-pane="0"><div class="pane-label"><b>Source</b><span class="sub">armchair</span></div></div>
+          <div class="pane-3d" data-pane="1"><div class="pane-label"><b id="ladder-edit-label">Edited</b><span id="ladder-edit-sub" class="vwrap"></span></div></div>
+          <p class="viewer-hint">Drag to rotate · scroll or pinch to zoom · double-click to reset. Both views share one camera and, unless marked, one scale.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ BENCHMARK -->
+<section id="benchmark" class="sec sec-alt">
+  <div class="wrap">
+    <p class="kicker">The benchmark</p>
+    <h2>108 programs that build whole objects in code</h2>
+    <p class="lede">A meaningful edit needs a program that exposes the object's parameters and parts. We reconstruct
+      53 OpenSCAD designs of buildings, furniture, and mechanical parts shared online as editable Blender programs, using a
+      generator and an evaluator agent grounded in renders, and add 55 procedural programs from
+      <a href="https://3dcodebench.com">3DCodeBench</a>. For each program and edit type we generate edit prompts with
+      checklists, then filter, select, and screen them for ambiguity under human supervision.</p>
+    <figure class="figure">
+      <a href="assets/img/overview.png" class="fig-link"><picture>
+        <source srcset="assets/img/overview.webp" type="image/webp">
+        <img src="assets/img/overview.png" width="2400" height="640" alt="Construction pipeline: OpenSCAD designs are reconstructed as editable Blender programs by a generator and an evaluator; 53 are combined with 55 3DCodeBench programs. Edit tasks are generated, filtered, selected and screened, giving 2,592 tasks." loading="lazy">
+      </picture></a>
+    </figure>
+
+    <div class="gallery-head">
+      <h3>Browse all 108 source programs</h3>
+      <div class="chips" id="gallery-filter" role="group" aria-label="Filter by category"></div>
+    </div>
+    <div class="gallery" id="gallery"></div>
+    <button class="more-btn" id="gallery-more" type="button" hidden>Show all</button>
+    <p class="note">Click a program to inspect it in 3D.</p>
+  </div>
+</section>
+
+<!-- ============================================================ EXAMPLES -->
+<section id="examples" class="sec">
+  <div class="wrap">
+    <p class="kicker">Examples</p>
+    <h2>The same task, edited by different models</h2>
+    <p class="lede">Example edits from the main evaluation, each with its judgment on every checklist item.</p>
+    <div class="chips" id="case-filter" role="group" aria-label="Filter by edit type"></div>
+    <div class="case-list" id="case-list" role="listbox" aria-label="Tasks"></div>
+    <div class="case" id="case">
+      <div class="case-head" id="case-head"></div>
+      <div class="viewer viewer-case" id="case-viewer"></div>
+      <p class="viewer-hint">Drag to rotate · scroll or pinch to zoom · double-click to reset.</p>
+      <div class="matrix-wrap"><table class="matrix" id="case-matrix"></table></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ LEADERBOARD -->
+<section id="leaderboard" class="sec sec-alt">
+  <div class="wrap">
+    <p class="kicker">Leaderboard</p>
+    <h2>Single-shot all-pass rate on the full benchmark</h2>
+    <p class="lede">Percentage of the 2,592 tasks whose edited program runs, renders, and passes every checklist item.
+      Each model edits once. Unless noted otherwise, every experiment runs editors at medium reasoning effort (or the closest
+      equivalent), and the verifier, Gemini 3.8 Flash, at high. <i>Exec.</i> is the share of edited
+      programs that execute and render. Click a column to sort.</p>
+    <div class="lb-controls">
+      <label class="toggle"><input type="checkbox" id="lb-small"> Show five Qwen3.5 models (2B–35B)</label>
+      <span class="legend"><i class="sw sw-closed"></i>Proprietary <i class="sw sw-open"></i>Open-weight</span>
+    </div>
+    <div class="table-wrap"><table class="lb" id="lb"></table></div>
+    <p class="note">G1–G4: geometric edits of increasing scope (parameter, component, multi-component, structural).
+      S: style redesign. C: scene composition.</p>
+  </div>
+</section>
+
+<!-- ============================================================ ANALYSIS -->
+<section id="analysis" class="sec">
+  <div class="wrap">
+    <p class="kicker">Analysis</p>
+    <h2>Progress is fast, and moves to open-ended edits</h2>
+    <p class="lede">44 models released since November 2024, on the 312-task analysis subset. The best all-pass rate took
+      16 months to rise from 9.0% to 40.1% (to March 2026) and only six more months to reach 67.6%. The largest
+      gains since April 2026 are on style (+44 points) and composition (+40) edits, which earlier models rarely passed.</p>
+    <div class="chart-grid">
+      <figure class="chart-card chart-wide">
+        <figcaption><b>All-pass rate by release date</b><span>Lines join releases within four families; the dark step line is the best rate so far.</span></figcaption>
+        <div class="chart" id="chart-timeline"></div>
+      </figure>
+      <figure class="chart-card">
+        <figcaption><b>Best rate per edit type</b><span>Before April 2026 vs. all models.</span></figcaption>
+        <div class="chart" id="chart-types"></div>
+      </figure>
+    </div>
+
+    <h2 class="h2-follow">Why do models fail?</h2>
+    <p class="lede">We code every failure of 76 configurations (44 models and 32 further effort levels) by the first stage
+      at which the edit diverges from the instruction. Weak models mostly fail before the shape is built: they misread the
+      instruction or the program, or write code that does not run. As models improve, failures move to
+      <b>geometric foresight</b>: the code runs and changes the intended parts, but builds the wrong shape. Its share of
+      failures doubles from 18% for the weakest models to about 40% for the strongest, where it is the most common stage.</p>
+    <div class="mech">
+      <div class="mech-item"><b>9.2%</b><span><i>Interaction.</i> A new or changed part collides with or is swallowed by existing geometry, or leaves a gap.</span></div>
+      <div class="mech-item"><b>7.3%</b><span><i>Generator parameters.</i> A parameter reshapes the object in unintended ways.</span></div>
+      <div class="mech-item"><b>5.3%</b><span><i>Support.</i> Parts float or detach.</span></div>
+      <div class="mech-item"><b>4.3%</b><span><i>Wrong size.</i> The change is too small or too large.</span></div>
+    </div>
+    <p class="note">Most common geometric-foresight mechanisms, as shares of all failures. Models usually make the
+      requested change but misjudge how it fits with the rest of the object.</p>
+  </div>
+</section>
+
+<!-- ============================================================ MULTI-TURN -->
+<section id="feedback" class="sec sec-alt">
+  <div class="wrap">
+    <p class="kicker">Multi-turn editing</p>
+    <h2>Telling the editor what its code built</h2>
+    <p class="lede">If strong models fail mainly because they cannot foresee what their code builds, then telling them what it
+      built should help more than letting them think longer. We test this with multi-turn editing: after each edit, the editor
+      receives feedback on the result and may revise, for up to 8 rounds.</p>
+    <div class="mt">
+      <div class="mt-tabs" role="tablist" aria-label="Findings" id="mt-tabs">
+        <button class="mt-tab" role="tab" type="button" data-t="0" aria-selected="true"><span class="mt-n">1</span>Seeing the result helps</button>
+        <button class="mt-tab" role="tab" type="button" data-t="1" aria-selected="false"><span class="mt-n">2</span>A reviewer helps far more</button>
+        <button class="mt-tab" role="tab" type="button" data-t="2" aria-selected="false"><span class="mt-n">3</span>Feedback beats more compute</button>
+        <button class="mt-tab" role="tab" type="button" data-t="3" aria-selected="false"><span class="mt-n">4</span>Judge well, not edit well</button>
+      </div>
+      <div class="mt-panel" data-p="0">
+        <p class="mt-claim">An editor that checks its own renders does better than one that only rereads its code, for every editor
+          that can see images (up to +7.1 points for GPT-6-luna). The gain comes from seeing the result, not from the extra rounds.</p>
+        <figure class="chart-card"><figcaption><b>Self-check: rereading the code vs. seeing the renders</b><span>All-pass rate (%), analysis subset (312 tasks), up to 8 rounds. Editors that can see images.</span></figcaption>
+          <div class="chart" id="mt-c1"></div></figure>
+      </div>
+      <div class="mt-panel" data-p="1" hidden>
+        <p class="mt-claim">Strong editors rarely change an edit they have checked themselves: GPT-6.1-sol, Claude Opus 5.5 and Claude Sonnet 5.5
+          revise at most 0.6 times on average, against 2.7 or more times with a reviewer. A separate reviewer that reports only
+          which requirements are not met already helps, and describing how the renders differ from each one adds up to 10 more points.</p>
+        <div class="chart-grid">
+          <figure class="chart-card chart-wide"><figcaption><b>How much the feedback says</b><span>All-pass rate (%). The reviewer is GPT-6-luna; GPT-6-luna's own edits are reviewed by GPT-6.1-sol.</span></figcaption>
+            <div class="chart" id="mt-c2"></div></figure>
+          <figure class="chart-card"><figcaption><b>How often the editor revises</b><span>Mean rounds of revision (at most 8).</span></figcaption>
+            <div class="chart" id="mt-c2b"></div></figure>
+        </div>
+      </div>
+      <div class="mt-panel" data-p="2" hidden>
+        <p class="mt-claim">Feedback on the result helps more than extra computation. With a reviewer, GPT-6.1-sol reaches 85.6%, while its best
+          reasoning effort reaches 74.7%; a coding agent that renders and checks its own result does no better than single-shot
+          for GPT-6-luna.</p>
+        <figure class="chart-card"><figcaption><b>More compute vs. feedback on the renders</b><span>All-pass rate (%), analysis subset. Best effort: xhigh for GPT-6.1-sol, max for GPT-6-luna. Separate reviewer: GPT-6-luna reviews GPT-6.1-sol, and GPT-6.1-sol reviews GPT-6-luna.</span></figcaption>
+          <div class="chart" id="mt-c3"></div></figure>
+      </div>
+      <div class="mt-panel" data-p="3" hidden>
+        <p class="mt-claim">GPT-6-luna edits worse than the three strongest editors, yet reviews them about as well as they review themselves:
+          judging an edit is easier than making it. Weak editors, however, cannot judge their own edits. With GPT-6-luna instead of self-review, Qwen3.8-27B rises from 37.2% to 50.3%, above the single-shot rate of the
+          2.8T-parameter Kimi K3 (46.8%).</p>
+        <figure class="chart-card"><figcaption><b>Who gives the feedback</b><span>All-pass rate (%) with full feedback from the editor itself or from GPT-6-luna; GPT-6-luna's own edits are reviewed by GPT-6.1-sol.</span></figcaption>
+          <div class="chart" id="mt-c4"></div></figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ EVALUATE -->
+<section id="evaluate" class="sec">
+  <div class="wrap">
+    <p class="kicker">Use the benchmark</p>
+    <h2>Evaluate your model</h2>
+    <p class="lede">Evaluating a model takes two steps: run inference, so that the model edits the source program of
+      every task, then render, verify, and score the edited programs. Each step resumes where it stopped.</p>
+    <div class="code-card">
+      <button class="copy" data-copy="quickstart" type="button">Copy</button>
+<pre id="quickstart"><code>pip install -r requirements.txt     <span class="c"># also install Blender 5.1.0</span>
+
+<span class="c"># 1. Run inference (example script for an OpenAI-compatible endpoint, with the paper's settings)</span>
+OPENAI_API_KEY=... python -m evaluation.inference --model my-model --out my-model.jsonl
+<span class="c">#    or use your own pipeline: prompts from `python -m evaluation.prompts`,</span>
+<span class="c">#    one {"case_id", "response", "finish_reason"} line per task</span>
+
+<span class="c"># 2. Render each original/edited pair from six views</span>
+python -m evaluation.render --run runs/my-model --predictions my-model.jsonl \
+    --blender /path/to/blender --workers 32
+
+<span class="c"># Judge every checklist item with Gemini 3.8 Flash</span>
+GEMINI_API_KEY=... python -m evaluation.verify --run runs/my-model --workers 32
+
+<span class="c"># Compute all-pass rates</span>
+python -m evaluation.score runs/*</code></pre>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ CITE -->
+<section id="cite" class="sec sec-alt">
+  <div class="wrap">
+    <p class="kicker">Citation</p>
+    <h2>BibTeX</h2>
+    <div class="code-card">
+      <button class="copy" data-copy="bibtex" type="button">Copy</button>
+<pre id="bibtex"><code>@article{wang20263dcodeedit,
+  title   = {{3DCodeEdit}: Benchmarking Instruction-Guided {3D} Program Editing},
+  author  = {Wang, Binjie and Zhao, Xinran and Yu, Shoubin and Li, Xiang and Yong, Silong and
+             Yang, Chenyang and Chen, Tianyu and Du, Ruofei and He, He and Zhao, Chen and Wu, Tongshuang},
+  journal = {arXiv preprint},
+  year    = {2026}
+}</code></pre>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-inner">
+    <img src="assets/img/logo.png" alt="3DCodeEdit" width="140" height="20">
+  </div>
+</footer>
+
+<div class="modal" id="modal" hidden>
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <button class="modal-close" type="button" data-close aria-label="Close">×</button>
+    <div class="viewer viewer-modal" id="modal-viewer"><div class="pane-3d" data-pane="0"></div></div>
+    <div class="modal-meta" id="modal-meta"></div>
+  </div>
+</div>
+
+</body>
+</html>
